@@ -35,6 +35,6 @@ dofile("Scripts/ScriptingSystem.lua")
 
 ----------------------------------------------------任务环境脚本----------------------------------------------------
 do
-  dofile(lfs.writedir() .. "Scripts/Source/Version3.0/Mission/SourceConfig.lua")
+  dofile(lfs.writedir() .. "Scripts/Source/Version3.0/Mission/SourceInit.lua")
 end
 --------------------------------------------------测试脚本从这里开始.-----------------------------------------------------

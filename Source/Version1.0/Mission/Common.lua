@@ -13,26 +13,26 @@ SourceObj.realRecoverTime = 600
 SourceObj.updatePlayerInfo = function(_name, _ucid)
   SourceObj.playerInfo[_name] = _ucid
   SourceObj.playerSource[_ucid] = SourceObj.playerSource[_ucid] or {}
-  if SourceObj.playerSource[_ucid]['point'] == nil then
-    SourceObj.playerSource[_ucid]['name'] = _name
-    SourceObj.playerSource[_ucid]['point'] = SourceObj.sourceInitPoint
+  if SourceObj.playerSource[_ucid]["point"] == nil then
+    SourceObj.playerSource[_ucid]["point"] = SourceObj.sourceInitPoint
     SourceObj.SaveSourcePoint()
   end
+  SourceObj.playerSource[_ucid]["name"] = _name
   local autoAddID = timer.scheduleFunction(SourceObj.autoAddSourcePoint, _ucid, timer.getTime() + SourceObj.realRecoverTime)
-  env.info('自动增加资源点计时器ID:' .. autoAddID)
+  env.info("自动增加资源点计时器ID:" .. autoAddID)
 end
 SourceObj.autoAddSourcePoint = function(_ucid, time)
   SourceObj.timeHasRun = time + SourceObj.realRecoverTime
-  env.info('自动增加资源点执行时间: ' .. timer.getTime() .. ',具有以下参数:' .. _ucid .. ',已经运行时间:' .. SourceObj.timeHasRun)
+  env.info("自动增加资源点执行时间: " .. timer.getTime() .. ",具有以下参数:" .. _ucid .. ",已经运行时间:" .. SourceObj.timeHasRun)
   if SourceObj.playerGroup[_ucid] then
-    if SourceObj.playerSource[_ucid]['point'] and SourceObj.playerSource[_ucid]['point'] < SourceObj.sourceMaxPoint then
-      SourceObj.playerSource[_ucid]['point'] = SourceObj.playerSource[_ucid]['point'] + SourceObj.recoverPoint
+    if SourceObj.playerSource[_ucid]["point"] and SourceObj.playerSource[_ucid]["point"] < SourceObj.sourceMaxPoint then
+      SourceObj.playerSource[_ucid]["point"] = SourceObj.playerSource[_ucid]["point"] + SourceObj.recoverPoint
       SourceObj.SaveSourcePoint()
-      local restored = string.format('执勤奖励%d资源点', SourceObj.recoverPoint)
-      if SourceObj.playerSource[_ucid]['point'] > SourceObj.sourceMaxPoint then
-        local countRestored = tostring(SourceObj.playerSource[_ucid]['point'] - SourceObj.sourceMaxPoint)
-        restored = string.format('执勤奖励%d资源点', countRestored)
-        SourceObj.playerSource[_ucid]['point'] = SourceObj.sourceMaxPoint
+      local restored = string.format("执勤奖励%d资源点", SourceObj.recoverPoint)
+      if SourceObj.playerSource[_ucid]["point"] > SourceObj.sourceMaxPoint then
+        local countRestored = tostring(SourceObj.playerSource[_ucid]["point"] - SourceObj.sourceMaxPoint)
+        restored = string.format("执勤奖励%d资源点", countRestored)
+        SourceObj.playerSource[_ucid]["point"] = SourceObj.sourceMaxPoint
         SourceObj.SaveSourcePoint()
       end
       trigger.action.outTextForGroup(SourceObj.playerGroup[_ucid], restored, 10)
@@ -54,7 +54,7 @@ end
 SourceObj.is_includeTable = function(value, tab)
   if tab then
     for k1, v1 in pairs(tab) do
-      if type(v1) == 'table' then
+      if type(v1) == "table" then
         for k2, v2 in pairs(v1) do
           if v2 == value then
             return true
@@ -138,14 +138,14 @@ SourceObj.getSourceObjChange = function(_unit)
         elseif SourceObj.is_include(typeName, Weapon.mailbox) then
           sourcePointChange = sourcePointChange + Weapon.mailboxPoint * ammo.count
         end
-        if ammo.desc.typeName == 'AIM_54A_Mk60' or ammo.desc.typeName == 'AIM_54C_Mk47' then
-          local text = string.format('你携带了AIM_54A_Mk60或AIM_54C_Mk47, 马上就爆炸了~BOOM')
+        if ammo.desc.typeName == "AIM_54A_Mk60" or ammo.desc.typeName == "AIM_54C_Mk47" then
+          local text = string.format("你携带了AIM_54A_Mk60或AIM_54C_Mk47, 马上就爆炸了~BOOM")
           SourceObj.AIM_54(_unit, text)
-        elseif ammo.desc.typeName == 'AIM_54A_Mk47' then
+        elseif ammo.desc.typeName == "AIM_54A_Mk47" then
           if ammo.count < 3 then
             sourcePointChange = sourcePointChange + 200 * ammo.count
           else
-            local text = string.format('禁止携带超过两枚AIM_54A_Mk47, 马上就爆炸了~BOOM')
+            local text = string.format("禁止携带超过两枚AIM_54A_Mk47, 马上就爆炸了~BOOM")
             SourceObj.AIM_54(_unit, text)
           end
         end
@@ -161,4 +161,4 @@ SourceObj.getSourceObjChange = function(_unit)
   return sourcePointChange, SourceObj.JSON:encode(countInfo)
 end
 
-env.info('公用工具已添加')
+env.info("公用工具已添加")
