@@ -24,7 +24,6 @@ function SourceCall.onPlayerStart(id)
   if DCS.isServer() and DCS.isMultiplayer() and name and ucid and id ~= net.get_my_player_id() then
     net.dostring_in("mission", 'a_do_script(\'SourceObj.updatePlayerInfo("' .. name .. '", "' .. ucid .. '")\')')
     --保存玩家详细信息
-    net.log("玩家连接:", SourceCall.PlayerInfo[ucid])
     if SourceCall.PlayerInfo[ucid] == nil then
       SourceCall.PlayerInfo[ucid] = {}
     end
