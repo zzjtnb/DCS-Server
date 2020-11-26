@@ -5,7 +5,6 @@ SourceCall.friendly_fire = function(eventName, playerID, weaponName, victimPlaye
   SourceCall.PlayerInfo[ucid]["KillFriend"] = SourceCall.PlayerInfo[ucid]["KillFriend"] + 1
   -- net.log("时间:", os.difftime(os.time(), SourceCall.PlayerInfo[ucid]["loginTime"]), os.difftime(os.time(), SourceCall.PlayerInfo[ucid]["quitTime"]))
   -- net.log("次数:", SourceCall.PlayerInfo[ucid]["KillFriend"])
-
   -- net.log("第1个条件:", os.difftime(os.time(), SourceCall.PlayerInfo[ucid]["loginTime"]) < 1800, SourceCall.PlayerInfo[ucid]["KillFriend"] >= 2)
   -- net.log("第2个条件:", os.difftime(os.time(), SourceCall.PlayerInfo[ucid]["quitTime"]) > 1800, SourceCall.PlayerInfo[ucid]["KillFriend"] < 3)
   -- net.log("第3个条件:", os.difftime(os.time(), SourceCall.PlayerInfo[ucid]["loginTime"]) > 1800, SourceCall.PlayerInfo[ucid]["KillFriend"] > 3)
