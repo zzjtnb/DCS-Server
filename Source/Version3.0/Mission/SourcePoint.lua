@@ -12,10 +12,10 @@ function SourceObj.creatFile(path, name, data)
   end
 end
 ---------------------加载---------------------------
-SourceObj.SourceSavePointDataPath = SourceObj.Config_Dir .. [[\SourceSavePoint.json]]
+SourceObj.SourceSavePointDataPath = SourceObj.Config_Dir .. [[\玩家资源点.json]]
 
 SourceObj.SourceSavePoint = function(data)
-  SourceObj.creatFile(SourceObj.Config_Dir, "SourceSavePoint.json", data)
+  SourceObj.creatFile(SourceObj.Config_Dir, "玩家资源点.json", data)
 end
 SourceObj.LoadSavedSourcePoint = function(path)
   local LoadSourcePoint, error = io.open(path, "r")

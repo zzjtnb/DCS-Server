@@ -20,11 +20,11 @@ function SourceObj.WeaponData(data)
   SourceObj.creatFile(SourceObj.SourceObj_Dir, "WeaponData.txt", data)
 end
 function SourceObj.SourceSavePoint(data)
-  SourceObj.creatFile(SourceObj.SourceObj_Dir, "SourceSavePoint.json", data)
+  SourceObj.creatFile(SourceObj.SourceObj_Dir, "玩家资源点.json", data)
 end
 
 --------------------------------------------------------------------加载保存的资源点-----------------------------------------------
-SourceObj.SourceSavePointDataPath = SourceObj.SourceObj_Dir .. [[\SourceSavePoint.json]]
+SourceObj.SourceSavePointDataPath = SourceObj.SourceObj_Dir .. [[\玩家资源点.json]]
 SourceObj.SaveSourcePoint = function()
   File = io.open(SourceObj.SourceSavePointDataPath, "w")
   File:write(SourceObj.JSON:encode(SourceObj.playerSource))

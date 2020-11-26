@@ -1,12 +1,12 @@
 if TCP == nil then
-  net.log("正在加载UDP.lua ...")
+  net.log("正在加TCP.lua ...")
   TCP = {}
   TCP.host = "localhost"
-  TCP.port = "8888"
+  TCP.port = "20200"
   --------------------------------    定义TCP的callbacks  --------------------------------
   TCP.callbacks = {}
   function TCP.callbacks.onSimulationStart()
-    socket = require("socket")
+    local socket = require("socket")
     TCP.server = socket.tcp()
     assert(TCP.server:bind(TCP.host, TCP.port))
     assert(TCP.server:listen()) --转为服务器

@@ -19,7 +19,6 @@ do
     local newMsg = "加载任务脚本 INFO: " .. msg
     net.log(newMsg)
   end
-
   --加载任务环境脚本
   local curMSf, err = io.open("./Scripts/MissionScripting.lua", "r")
   if curMSf then

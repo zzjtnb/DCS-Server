@@ -14,10 +14,10 @@ SourceObj.updatePlayerInfo = function(_name, _ucid)
   SourceObj.playerInfo[_name] = _ucid
   SourceObj.playerSource[_ucid] = SourceObj.playerSource[_ucid] or {}
   if SourceObj.playerSource[_ucid]["point"] == nil then
-    SourceObj.playerSource[_ucid]["name"] = _name
     SourceObj.playerSource[_ucid]["point"] = SourceObj.sourceInitPoint
     SourceObj.SaveSourcePoint()
   end
+  SourceObj.playerSource[_ucid]["name"] = _name
   local autoAddID = timer.scheduleFunction(SourceObj.autoAddSourcePoint, _ucid, timer.getTime() + SourceObj.realRecoverTime)
   env.info("自动增加资源点计时器ID:" .. autoAddID)
 end
@@ -155,7 +155,7 @@ SourceObj.getSourceObjChange = function(_unit)
         end
       end
     end
-  -- SourceData.WeaponData(SourceObj.JSON:encode(countInfo) .. '\n')
+  -- SaveData.WeaponData(SourceObj.JSON:encode(countInfo) .. '\n')
   end
 
   return sourcePointChange, SourceObj.JSON:encode(countInfo)

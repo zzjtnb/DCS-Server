@@ -1,6 +1,6 @@
 do
   SourceCall = SourceCall or {}
-  SourceCall.AdminFile = SourceCall.Config_Dir .. "serverAdmins.json"
+  SourceCall.AdminFile = SourceCall.Config_Dir .. "管理员列表.json"
   SourceCall.load_admins = function()
     local Admins_File = io.open(SourceCall.AdminFile, "r")
     if Admins_File then
