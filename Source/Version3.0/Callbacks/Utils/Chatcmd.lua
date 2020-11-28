@@ -70,11 +70,11 @@ end
 ChatFile = function(id, realString, all)
   if SourceCall.chatLogFile and SourceCall.clients[id] then -- 客户端最好存在于SourceCall客户端中！
     -- local clientInfo = table.concat({"{name=", tostring(SourceCall.clients[id].name), ",ucid=", tostring(SourceCall.clients[id].ucid), "}"})
-    local clientInfo = string.format("{name=%s,ucid=%s", tostring(SourceCall.clients[id].name), tostring(SourceCall.clients[id].ucid))
+    local clientInfo = string.format("{name=%s,ucid=%s}", tostring(SourceCall.clients[id].name), tostring(SourceCall.clients[id].ucid))
     local logline
     local writeLog = true
     if realString ~= "/mybad" then
-      local chartType = {[-1] = " 全体消息", [-2] = " 友军消息"}
+      local chartType = {[-1] = " 全体消息", [-2] = " 友军消息", [all] = " net.send_chat_to"}
       logline = os.date("%Y-%m-%d %H:%M:%S ") .. clientInfo .. chartType[all] .. ':"' .. realString .. '"'
       logline = logline .. "\n"
     else

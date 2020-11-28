@@ -35,9 +35,6 @@ SourceObj.updateSourcePointsByEvent = function(_unit, _ucid, _event)
     trigger.action.outTextForGroup(_groupId, text, 10)
   elseif _event == "kill" then
     local _groupId = SourceObj.getGroupId(_unit.initiator)
-    env.info(SourceObj.JSON:encode(_unit))
-    env.info(_unit.target)
-
     if _unit.initiator:getCoalition() ~= _unit.target:getCoalition() then
       SourceObj.eventAddPoint("击杀敌军", SourceObj.getSourceKillChange(_unit.target), _ucid, _groupId)
     else
