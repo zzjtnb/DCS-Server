@@ -75,7 +75,7 @@ Chatcmd = function(REXtext, playerID, ucid)
         else
           net.kick(SourceCall.PlayerInfo[_ucid]["id"])
         end
-        net.send_chat_to("玩家:" .. SourceCall.PlayerInfo[_ucid]["name"] .. "已被封禁", playerID)
+        net.send_chat_to("玩家:" .. REXtext[3] .. "已被封禁", playerID)
       else
         net.send_chat_to("未找到该用户名相关的玩家", playerID)
       end
