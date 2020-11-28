@@ -5,6 +5,7 @@ SourceObj.sourceInitPoint = 1000
 SourceObj.sourceMaxPoint = 100000
 SourceObj.recoverPoint = 100
 SourceObj.realRecoverTime = 600
+SourceObj.autoAddID = {}
 -- SourceObj.landRecoverTime = 60 -- 以秒为单位
 -- SourceObj.skyRecoverTime = 30 -- 以秒为单位
 -- SourceObj.timeHasRun = 0
@@ -18,8 +19,11 @@ SourceObj.updatePlayerInfo = function(_name, _ucid)
     SourceObj.SaveSourcePoint()
   end
   SourceObj.playerSource[_ucid]["name"] = _name
-  local autoAddID = timer.scheduleFunction(SourceObj.autoAddSourcePoint, _ucid, timer.getTime() + SourceObj.realRecoverTime)
-  env.info("自动增加资源点计时器ID:" .. autoAddID)
+  SourceObj.autoAddID[_ucid] = timer.scheduleFunction(SourceObj.autoAddSourcePoint, _ucid, timer.getTime() + SourceObj.realRecoverTime)
+  env.info("自动增加资源点计时器ID:" .. SourceObj.autoAddID[_ucid])
+end
+SourceObj.clearAutoAddSourcePoint = function(_ucid)
+  timer.removeFunction(SourceObj.autoAddID[_ucid])
 end
 SourceObj.autoAddSourcePoint = function(_ucid, time)
   SourceObj.timeHasRun = time + SourceObj.realRecoverTime

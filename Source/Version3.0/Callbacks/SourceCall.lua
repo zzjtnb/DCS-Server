@@ -40,7 +40,13 @@ function SourceCall.onPlayerStart(id)
     FileData.SaveData(SourceCall.PlayerInfoFile, net.lua2json(SourceCall.PlayerInfo))
   end
 end
-
+function SourceCall.onPlayerDisconnect(id, err_code)
+  local ucid = net.get_player_info(id, "ucid")
+  if DCS.isServer() and DCS.isMultiplayer() and ucid and id ~= net.get_my_player_id() then
+    net.dostring_in("mission", 'a_do_script(\'SourceObj.clearAutoAddSourcePoint("' .. ucid .. '")\')')
+  end
+  -- this is never called for local playerID
+end
 function SourceCall.onPlayerTrySendChat(id, msg, all)
   local ucid = net.get_player_info(id, "ucid")
   local realString = Cut_tail_spaces(msg)
