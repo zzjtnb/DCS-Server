@@ -50,3 +50,6 @@ Utils.is_includeTable = function(value, tab)
   end
   return false
 end
+Utils.get_stat = function(id)
+  net.log(SourceCall.JSON:encode(net.get_stat(id)))
+end

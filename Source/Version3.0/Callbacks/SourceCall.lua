@@ -1,5 +1,5 @@
 SourceCall = SourceCall or {}
-SourceCall.PlayerName = {}
+SourceCall.PlayerName = SourceCall.PlayerName or {}
 
 -------------------------------------------------------游戏事件开始--------------------------------------------------
 
@@ -40,28 +40,28 @@ function SourceCall.onPlayerStart(id)
     FileData.SaveData(SourceCall.PlayerInfoFile, net.lua2json(SourceCall.PlayerInfo))
   end
 end
-function SourceCall.onPlayerDisconnect(id, err_code)
-  local ucid = net.get_player_info(id, "ucid")
-  if DCS.isServer() and DCS.isMultiplayer() and ucid and id ~= net.get_my_player_id() then
-    net.dostring_in("mission", 'a_do_script(\'SourceObj.clearAutoAddSourcePoint("' .. ucid .. '")\')')
-  end
-  -- this is never called for local playerID
-end
+
 function SourceCall.onPlayerTrySendChat(id, msg, all)
   local ucid = net.get_player_info(id, "ucid")
   local name = net.get_player_info(id, "name")
   local realString = Cut_tail_spaces(msg)
   local REXtext = Split_by_space(realString)
-  Chatcmd(REXtext, id, ucid, name)
+  AdminCmd(REXtext, id, ucid, name)
+  PlayerCmd(REXtext, id, ucid, name)
   ChatFile(id, realString, all)
 end
+
 function SourceCall.onPlayerDisconnect(id, err)
+  Utils.get_stat(id)
   SourceCall.clients = SourceCall.clients or {} --should not be necessary.
   if SourceCall.clients[id] then
     SourceCall.clients[id] = nil
     SourceCall.num_clients = SourceCall.num_clients - 1
   end
-  return
+  local ucid = net.get_player_info(id, "ucid")
+  if DCS.isServer() and DCS.isMultiplayer() and ucid and id ~= net.get_my_player_id() then
+    net.dostring_in("mission", 'a_do_script(\'SourceObj.clearAutoAddSourcePoint("' .. ucid .. '")\')')
+  end
 end
 function SourceCall.onGameEvent(eventName, playerID, ...)
   -- net.log("onGameEvent事件详情: --> " .. eventName .. " : " .. net.lua2json({playerID = playerID, ...}))
@@ -80,21 +80,23 @@ function SourceCall.onGameEvent(eventName, playerID, ...)
     call(eventName, playerID, ...)
   end
 end
-function SourceCall.onMissionLoadBegin()
-  SourceCall.mission_start_time = DCS.getRealTime() --需要防止CTD引起的C Lua的API上net.pause和net.resume
+function SourceCall.onMissionLoadEnd()
+  if DCS.getRealTime() > 0 then
+    SourceCall.mission_start_time = DCS.getRealTime() --需要防止CTD引起的C Lua的API上net.pause和net.resume
+  end
 end
 function SourceCall.onSimulationFrame()
-  if DCS.getModelTime() > 0 then
-  end
-  if SourceCall.pause_when_empty and (DCS.getRealTime() > SourceCall.mission_start_time + 8) then -- 8秒窗口以希望总是避免CTD
-    if DCS.getPause() == false then
-      SourceCall.pause_forced = false -- 如果服务器由于任何原因未暂停，请关闭强制暂停。
-    end
-    if not SourceCall.pause_override then --暂停覆盖不是false
-      if (SourceCall.num_clients and SourceCall.num_clients == 1 or not SourceCall.num_clients) and DCS.getPause() == false then
-        DCS.setPause(true)
-      elseif SourceCall.num_clients and SourceCall.num_clients > 1 and DCS.getPause() == true and (not SourceCall.pause_forced) then
-        DCS.setPause(false)
+  if SourceCall.mission_start_time then
+    if SourceCall.pause_when_empty and (DCS.getRealTime() > SourceCall.mission_start_time + 8) then -- 8秒窗口以希望总是避免CTD
+      if DCS.getPause() == false then
+        SourceCall.pause_forced = false -- 如果服务器由于任何原因未暂停，请关闭强制暂停。
+      end
+      if not SourceCall.pause_override then --暂停覆盖不是false
+        if (SourceCall.num_clients and SourceCall.num_clients == 1 or not SourceCall.num_clients) and DCS.getPause() == false then
+          DCS.setPause(true)
+        elseif SourceCall.num_clients and SourceCall.num_clients > 1 and DCS.getPause() == true and (not SourceCall.pause_forced) then
+          DCS.setPause(false)
+        end
       end
     end
   end

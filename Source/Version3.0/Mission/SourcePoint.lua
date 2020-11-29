@@ -56,3 +56,10 @@ SourceObj.lessSourcePoint = function(_ucid, point)
   SourceObj.playerSource[_ucid]["point"] = SourceObj.playerSource[_ucid]["point"] - point
   SourceObj.SaveSourcePoint()
 end
+SourceObj.donatePoint = function(DonorUcid, WinnerUcid, point)
+  SourceObj.playerSource[DonorUcid]["point"] = SourceObj.playerSource[DonorUcid]["point"] - point
+  SourceObj.playerSource[WinnerUcid]["point"] = SourceObj.playerSource[WinnerUcid]["point"] + point
+  trigger.action.outTextForGroup(SourceObj.playerGroup[DonorUcid], "已转增给" .. SourceObj.playerSource[WinnerUcid]["name"] .. tonumber(point) .. "点资源点", 10)
+  trigger.action.outTextForGroup(SourceObj.playerGroup[WinnerUcid], SourceObj.playerSource[DonorUcid]["name"] .. "给你转增" .. tonumber(point) .. "点资源点", 10)
+  SourceObj.SaveSourcePoint()
+end
