@@ -1,19 +1,7 @@
-Is_include = function(value, tab)
-  if tab then
-    for k, v in pairs(tab) do
-      net.log(k, v)
-      if v == value then
-        return k
-      end
-    end
-  end
-  return false
-end
-
-Chatcmd = function(REXtext, playerID, ucid)
+Chatcmd = function(REXtext, playerID, ucid, name)
   if REXtext[1] == "-admin" and REXtext[2] == "help" or REXtext[2] == "h" then
     if playerID == 1 or SourceCall.Admins[ucid] then
-      local text = string.format("管理员命令\n                               1.增加管理员\n  -admin addAdmin name\n                    2.删除管理员\n  -admin removeAdmin name\n              3.给玩家增加资源点\n  -admin addPoint name point\n   4.给玩家减少资源点\n  -admin lessPoint name point\n  5.封禁玩家\n   -admin ban name\n                                6.解封玩家\n   -admin unban name\n")
+      local text = string.format("管理员命令\n                               1.增加管理员\n  -admin addAdmin name\n                    2.删除管理员\n  -admin removeAdmin name\n              3.给玩家增加资源点\n  -admin addPoint name point\n   4.给玩家减少资源点\n  -admin lessPoint name point\n  5.封禁玩家\n   -admin ban name\n                                6.解封玩家\n   -admin unban name 备注(可不填)\n")
       net.send_chat_to(text, playerID)
     else
       Utils.admin_caveat(ucid, 100, playerID)
@@ -30,7 +18,7 @@ Chatcmd = function(REXtext, playerID, ucid)
     end
   elseif REXtext[1] == "-admin" and REXtext[2] == "removeAdmin" and REXtext[3] then
     if playerID == 1 or SourceCall.Admins[ucid] then
-      local id = Is_include(REXtext[3], SourceCall.Admins)
+      local id = Utils.Is_include(REXtext[3], SourceCall.Admins)
       if id then
         SourceCall.less_admins({name = REXtext[3], ucid = id}, playerID)
       else
@@ -67,13 +55,16 @@ Chatcmd = function(REXtext, playerID, ucid)
   elseif REXtext[1] == "-admin" and REXtext[2] == "ban" and REXtext[3] or REXtext[4] then
     if playerID == 1 or SourceCall.Admins[ucid] then
       if SourceCall.PlayerName[REXtext[3]] then
-        local _ucid = SourceCall.PlayerName[REXtext[3]]
-        SourceCall.BannedClients[ucid] = {IP = SourceCall.PlayerInfo[_ucid]["ipaddr"], ucid = SourceCall.PlayerInfo[_ucid]["ucid"], name = SourceCall.PlayerInfo[_ucid]["name"]}
+        SourceCall.BannedClients[REXtext[3]] = {
+          ipaddr = SourceCall.PlayerInfo[SourceCall.PlayerName[REXtext[3]]]["ipaddr"],
+          ucid = SourceCall.PlayerInfo[SourceCall.PlayerName[REXtext[3]]]["ucid"],
+          remark = REXtext[4]
+        }
         FileData.SaveData(SourceCall.BannedClientsFile, net.lua2json(SourceCall.BannedClients))
         if REXtext[4] then
-          net.kick(SourceCall.PlayerInfo[_ucid]["id"], REXtext[4])
+          net.kick(SourceCall.PlayerInfo[SourceCall.PlayerName[REXtext[3]]]["id"], REXtext[4])
         else
-          net.kick(SourceCall.PlayerInfo[_ucid]["id"])
+          net.kick(SourceCall.PlayerInfo[SourceCall.PlayerName[REXtext[3]]]["id"])
         end
         net.send_chat_to("玩家:" .. REXtext[3] .. "已被封禁", playerID)
       else
@@ -84,8 +75,8 @@ Chatcmd = function(REXtext, playerID, ucid)
     end
   elseif REXtext[1] == "-admin" and REXtext[2] == "unban" and REXtext[3] then
     if playerID == 1 or SourceCall.Admins[ucid] then
-      if SourceCall.PlayerName[REXtext[3]] and SourceCall.BannedClients[SourceCall.PlayerName[REXtext[3]]] then
-        SourceCall.BannedClients[SourceCall.PlayerName[REXtext[3]]] = nil
+      if SourceCall.BannedClients[REXtext[3]] then
+        SourceCall.BannedClients[REXtext[3]] = nil
         FileData.SaveData(SourceCall.BannedClientsFile, net.lua2json(SourceCall.BannedClients))
         net.send_chat_to("玩家:" .. REXtext[3] .. "已解封", playerID)
       else

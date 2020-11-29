@@ -14,27 +14,24 @@ dofile("Scripts/ScriptingSystem.lua")
 -- -- "win" don't touch. But is important to indicate that we are in a windows environment to the debugger script.
 -- initconnection('127.0.0.1', 10000, 'dcsserver', nil, 'win', 'D:\\Office\\Java\\workspace\\DCS World')
 
+----------------------------------------------------任务环境脚本----------------------------------------------------
+dofile(lfs.writedir() .. "Scripts/Source/Version3.0/Mission/SourceInit.lua")
+--------------------------------------------------测试脚本从这里开始.-----------------------------------------------------
 -----------------------------------------------------清理任务脚本环境----------------------------------------------------
 --Sanitize Mission Scripting environment
 --This makes unavailable some unsecure functions.
 --Mission downloaded from server to client may contain potentialy harmful lua code that may use these functions.
 --You can remove the code below and make availble these functions at your own risk.
 
--- local function sanitizeModule(name)
---   _G[name] = nil
---   package.loaded[name] = nil
--- end
--- do
---   sanitizeModule('os')
---   sanitizeModule('io')
---   sanitizeModule('lfs')
---   sanitizeModule('debug') -- 恶意任务无法脱离沙盒并使用LuaSocket。
---   require = nil
---   loadlib = nil
--- end
-
-----------------------------------------------------任务环境脚本----------------------------------------------------
-do
-  dofile(lfs.writedir() .. "Scripts/Source/Version3.0/Mission/SourceInit.lua")
+local function sanitizeModule(name)
+  _G[name] = nil
+  package.loaded[name] = nil
 end
---------------------------------------------------测试脚本从这里开始.-----------------------------------------------------
+do
+  sanitizeModule("os")
+  sanitizeModule("io")
+  sanitizeModule("lfs")
+  sanitizeModule("debug") -- 恶意任务无法脱离沙盒并使用LuaSocket。
+  require = nil
+  loadlib = nil
+end

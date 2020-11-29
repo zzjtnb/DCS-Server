@@ -77,7 +77,6 @@ SourceObj.onBirth = function(_unit)
   if _groupId == nil then
     return
   end
-  env.info("玩家出生类型:" .. _typeName)
   SourceObj.playerGroup[_ucid] = _groupId
   SourceObj.playerUcidByGroup[_groupId] = _ucid
   SourceObj.addF10SourceMenu(_groupId)

@@ -3,14 +3,14 @@ SourceCall.PlayerName = {}
 
 -------------------------------------------------------游戏事件开始--------------------------------------------------
 
-function SourceCall.onPlayerTryConnect(addr, name, ucid, playerID)
-  if SourceCall.BannedClients[ucid] then
+function SourceCall.onPlayerTryConnect(ipaddr, name, ucid, playerID)
+  if Utils.is_includeTable(ucid, SourceCall.BannedClients) or Utils.is_includeTable(ipaddr, SourceCall.BannedClients) then
     return false, "你被封禁了，加QQ群联系管理员了解详细情况！"
   end
 end
 function SourceCall.onPlayerConnect(id)
   SourceCall.clients = SourceCall.clients or {}
-  SourceCall.clients[id] = {id = id, addr = net.get_player_info(id, "ipaddr"), name = net.get_player_info(id, "name"), ucid = net.get_player_info(id, "ucid"), ip = net.get_player_info(id, "ipaddr")}
+  SourceCall.clients[id] = {id = id, ipaddr = net.get_player_info(id, "ipaddr"), name = net.get_player_info(id, "name"), ucid = net.get_player_info(id, "ucid"), ip = net.get_player_info(id, "ipaddr")}
   if not SourceCall.num_clients then
     SourceCall.num_clients = 1
   else
@@ -49,9 +49,10 @@ function SourceCall.onPlayerDisconnect(id, err_code)
 end
 function SourceCall.onPlayerTrySendChat(id, msg, all)
   local ucid = net.get_player_info(id, "ucid")
+  local name = net.get_player_info(id, "name")
   local realString = Cut_tail_spaces(msg)
   local REXtext = Split_by_space(realString)
-  Chatcmd(REXtext, id, ucid)
+  Chatcmd(REXtext, id, ucid, name)
   ChatFile(id, realString, all)
 end
 function SourceCall.onPlayerDisconnect(id, err)
