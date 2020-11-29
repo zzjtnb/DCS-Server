@@ -28,10 +28,10 @@ local function sanitizeModule(name)
   package.loaded[name] = nil
 end
 do
-  sanitizeModule("os")
-  sanitizeModule("io")
-  sanitizeModule("lfs")
+  -- sanitizeModule("os")
+  -- sanitizeModule("io")
+  -- sanitizeModule("lfs")
   sanitizeModule("debug") -- 恶意任务无法脱离沙盒并使用LuaSocket。
-  require = nil
-  loadlib = nil
+  -- require = nil
+  -- loadlib = nil
 end

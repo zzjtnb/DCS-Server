@@ -84,20 +84,20 @@ function SourceCall.onMissionLoadBegin()
   SourceCall.mission_start_time = DCS.getRealTime() --需要防止CTD引起的C Lua的API上net.pause和net.resume
 end
 function SourceCall.onSimulationFrame()
-  -- if DCS.getModelTime() > 0 then
-  -- end
-  -- if SourceCall.pause_when_empty and (DCS.getRealTime() > SourceCall.mission_start_time + 8) then -- 8秒窗口以希望总是避免CTD
-  --   if DCS.getPause() == false then
-  --     pause_forced = false -- 如果服务器由于任何原因未暂停，请关闭强制暂停。
-  --   end
-  --   if not pause_override then
-  --     if (SourceCall.num_clients and SourceCall.num_clients == 1 or not SourceCall.num_clients) and DCS.getPause() == false then
-  --       DCS.setPause(true)
-  --     elseif SourceCall.num_clients and SourceCall.num_clients > 1 and DCS.getPause() == true and (not pause_forced) then
-  --       DCS.setPause(false)
-  --     end
-  --   end
-  -- end
+  if DCS.getModelTime() > 0 then
+  end
+  if SourceCall.pause_when_empty and (DCS.getRealTime() > SourceCall.mission_start_time + 8) then -- 8秒窗口以希望总是避免CTD
+    if DCS.getPause() == false then
+      SourceCall.pause_forced = false -- 如果服务器由于任何原因未暂停，请关闭强制暂停。
+    end
+    if not SourceCall.pause_override then --暂停覆盖不是false
+      if (SourceCall.num_clients and SourceCall.num_clients == 1 or not SourceCall.num_clients) and DCS.getPause() == false then
+        DCS.setPause(true)
+      elseif SourceCall.num_clients and SourceCall.num_clients > 1 and DCS.getPause() == true and (not SourceCall.pause_forced) then
+        DCS.setPause(false)
+      end
+    end
+  end
 end
 function SourceCall.onSimulationStop()
 end
