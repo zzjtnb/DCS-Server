@@ -1,7 +1,8 @@
 Utils = {}
 function Utils.admin_caveat(ucid, point, playerID)
   net.dostring_in("mission", [[a_do_script('SourceObj.lessSourcePoint("]] .. ucid .. '",' .. point .. [[)')]])
-  net.send_chat_to("乱玩管理员指令扣100资源点", playerID)
+  local name = net.get_player_info(playerID, "name")
+  net.send_chat_to(name .. " 乱玩管理员指令扣100资源点", playerID)
 end
 Utils.checkServer = function(id)
   if id == net.get_server_id() then
