@@ -1,6 +1,5 @@
 AdminCmd = function(REXtext, playerID, ucid, name)
-  net.log("消息: ", SourceCall.JSON:encode(REXtext))
-  if REXtext[1] == "-admin" then
+  if REXtext[1] == "-admin" and REXtext[2] == "h" then
     if playerID == 1 or SourceCall.Admins[ucid] then
       local text =
         string.format(
@@ -128,7 +127,9 @@ AdminCmd = function(REXtext, playerID, ucid, name)
     end
   elseif REXtext[1] == "-admin" and REXtext[2] == "forcePlayerSlot" and REXtext[3] then
     if playerID == 1 or SourceCall.Admins[ucid] then
-      net.force_player_slot(SourceCall.PlayerInfo[SourceCall.PlayerName[REXtext[3]]]["id"], 0, "")
+      if SourceCall.PlayerInfo[SourceCall.PlayerName[REXtext[3]]]["id"] then
+        net.force_player_slot(SourceCall.PlayerInfo[SourceCall.PlayerName[REXtext[3]]]["id"], 0, "")
+      end
     else
       Utils.admin_caveat(ucid, 100, playerID)
     end
