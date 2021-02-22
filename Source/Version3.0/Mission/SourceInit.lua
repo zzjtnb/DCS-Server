@@ -11,6 +11,7 @@ local status, error =
     dofile(lfs.writedir() .. "Scripts/Source/" .. loadVersion .. "/Mission/Common.lua")
     dofile(lfs.writedir() .. "Scripts/Source/" .. loadVersion .. "/Mission/SourcePoint.lua")
     dofile(lfs.writedir() .. "Scripts/Source/" .. loadVersion .. "/Mission/SourceSys.lua")
+    dofile(lfs.writedir() .. "Scripts/Source/" .. loadVersion .. "/Mission/SourceTeam.lua")
     dofile(lfs.writedir() .. "Scripts/Source/" .. loadVersion .. "/Mission/MissionEvent.lua")
     -- dofile(lfs.writedir() .. 'Scripts/Source/' .. loadVersion .. '/Mission/SaveData.lua')
     -- SaveData.SourceData_Dir = SourceData.creatDir(lfs.writedir(), "SourceData")

@@ -133,5 +133,21 @@ AdminCmd = function(REXtext, playerID, ucid, name)
     else
       Utils.admin_caveat(ucid, 100, playerID)
     end
+  elseif REXtext[1] == "-admin" and REXtext[2] == "addTeamPoint" then
+    if playerID == 1 or SourceCall.Admins[ucid] then
+      local fun_str = [[a_do_script('SourceObj.addSourceTeamPoint("]] .. REXtext[3] .. '",' .. REXtext[4] .. [[)')]]
+      net.dostring_in("mission", fun_str)
+      net.send_chat_to(string.format("红方资源点已增加%d点", REXtext[4]), playerID)
+    else
+      Utils.admin_caveat(ucid, 100, playerID)
+    end
+  elseif REXtext[1] == "-admin" and REXtext[2] == "lessTeamPoint" then
+    if playerID == 1 or SourceCall.Admins[ucid] then
+      local fun_str = [[a_do_script('SourceObj.lessSourceTeamPoint("]] .. REXtext[3] .. '",' .. REXtext[4] .. [[)')]]
+      net.dostring_in("mission", fun_str)
+      net.send_chat_to(string.format("蓝方资源点已减少%d点", REXtext[4]), playerID)
+    else
+      Utils.admin_caveat(ucid, 100, playerID)
+    end
   end
 end

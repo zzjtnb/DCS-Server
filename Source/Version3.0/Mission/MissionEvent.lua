@@ -10,14 +10,17 @@ function sourceMissionEvent.eventHandler:onEvent(event)
         if event.initiator:getPlayerName() ~= nil then
           if SourceObj.playerInfo[event.initiator:getPlayerName()] then
             SourceObj.updateSourcePointsByEvent(event.initiator, SourceObj.playerInfo[event.initiator:getPlayerName()], "takeoff")
+            SourceObj.updateTeamSourcePointsByEvent(event.initiator, SourceObj.playerInfo[event.initiator:getPlayerName()], "takeoff")
           end
         end
       elseif event.id == world.event.S_EVENT_LAND and event.initiator ~= nil then
         if SourceObj.playerInfo[event.initiator:getPlayerName()] then
           SourceObj.updateSourcePointsByEvent(event.initiator, SourceObj.playerInfo[event.initiator:getPlayerName()], "landing")
+          SourceObj.updateTeamSourcePointsByEvent(event.initiator, SourceObj.playerInfo[event.initiator:getPlayerName()], "landing")
         end
       elseif event.id == world.event.S_EVENT_BIRTH and event.initiator ~= nil then
         SourceObj.onBirth(event.initiator)
+        SourceObj.onTeamBirth(event.initiator)
       elseif event.id == world.event.S_EVENT_KILL or event.id == 29 and event.initiator ~= nil and event.target ~= nil then
         if event.initiator:getPlayerName() ~= nil then
           if SourceObj.playerInfo[event.initiator:getPlayerName()] then
