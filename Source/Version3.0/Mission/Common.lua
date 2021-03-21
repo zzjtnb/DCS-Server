@@ -146,16 +146,17 @@ SourceObj.getSourceObjChange = function(_unit)
           local text = string.format("你携带了AIM_54A_Mk60或AIM_54C_Mk47, 马上就爆炸了~BOOM")
           SourceObj.AIM_54(_unit, text)
         elseif ammo.desc.typeName == "AIM_54A_Mk47" then
-          if ammo.count < 3 then
-            sourcePointChange = sourcePointChange + 200 * ammo.count
+          if ammo.count < 7 then
+            sourcePointChange = sourcePointChange + 20 * ammo.count
           else
-            local text = string.format("禁止携带超过两枚AIM_54A_Mk47, 马上就爆炸了~BOOM")
+            --local text = string.format("禁止携带超过两枚AIM_54A_Mk47, 马上就爆炸了~BOOM")
             SourceObj.AIM_54(_unit, text)
           end
         end
 
         if SourceObj.is_includeTable(typeName, Weapon) then
-          countInfo[i] = {displayName = ammo.desc.displayName, count = ammo.count}
+          countInfo[i] = {["挂载"] = ammo.desc.displayName, ["数量"] = ammo.count}
+        --countInfo[i] = {displayName = ammo.desc.displayName, count = ammo.count}
         end
       end
     end

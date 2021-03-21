@@ -9,6 +9,6 @@ Aircraft.attacker = {"A-10A", "A-10C", "A-10C_2", "AV-8B", "Su-25", "Su-25T"}
 Aircraft.attackerPoint = 50
 
 Aircraft.helicopter = {"Ka-50", "Mi-8MTV2", "Mi-8MT", "UH-1H", "SA342M", "SA342L", "SA342Mistral"}
-Aircraft.helicopterPoint = 1
+Aircraft.helicopterPoint = 10
 
 env.info("飞机信息已添加")
