@@ -1,0 +1,17 @@
+{
+  "Lua.diagnostics.globals": [
+    "env",
+    "world",
+    "lfs",
+    "trigger",
+    "timer",
+    "missionCommands",
+    "net",
+    "DCS",
+    "log",
+    "serverSettings",
+    "Object",
+    "coalition",
+    "loadlib"
+  ]
+}

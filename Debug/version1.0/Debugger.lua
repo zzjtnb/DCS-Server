@@ -20,7 +20,7 @@ function Debugger.callbacks.onSimulationFrame()
   if TCP.server then
     if not TCP.client then
       TCP.client = TCP.server:accept() -- 连接的客户端
-      local res, line, err = nil
+      local res, line, err = nil, nil, nil
       if TCP.client then
         TCP.client:settimeout(1) -- 设置超时时间
         TCP.client:setoption("reuseaddr", true) --重用地址

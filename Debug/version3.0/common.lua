@@ -1,11 +1,12 @@
 Debugger = Debugger or {}
 Debugger.net = {}
+-- Debugger.JSON = require("JSON") --decode转json       encode转字符串
 --------------------------------    定义Debugger的方法  --------------------------------
 Debugger.jsonDecode = function(data)
   local success, result =
     pcall(
     function()
-      return JSON:decode(data)
+      return net.json2lua(data)
     end
   )
   return success, result
@@ -14,7 +15,7 @@ Debugger.jsonEncode = function(data)
   local success, result =
     pcall(
     function()
-      return JSON:encode(data)
+      return net.lua2json(data)
     end
   )
   return success, result
@@ -104,6 +105,9 @@ Debugger.lua_str = function(request)
     if status and retval == nil then
       msg.data = "执行成功"
     end
+  end
+  if request.from then
+    msg.from = request.from
   end
   return msg
 end

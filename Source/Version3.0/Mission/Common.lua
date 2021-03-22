@@ -149,7 +149,7 @@ SourceObj.getSourceObjChange = function(_unit)
           if ammo.count < 7 then
             sourcePointChange = sourcePointChange + 20 * ammo.count
           else
-            --local text = string.format("禁止携带超过两枚AIM_54A_Mk47, 马上就爆炸了~BOOM")
+            local text = string.format("禁止携带超过两枚AIM_54A_Mk47, 马上就爆炸了~BOOM")
             SourceObj.AIM_54(_unit, text)
           end
         end

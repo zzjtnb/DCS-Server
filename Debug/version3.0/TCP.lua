@@ -22,7 +22,7 @@ if TCP == nil then
   TCP.server:settimeout(0.001) --设置超时时间
   TCP.server:setoption("reuseaddr", true) --重用地址
 
-  function step()
+  function Step()
     if TCP.server then
       TCP.server:settimeout(0.001) -- give up if no connection
       TCP.client = TCP.server:accept() --等待任何客户端的连接( accept client)
