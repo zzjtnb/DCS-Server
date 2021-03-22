@@ -53,13 +53,13 @@ end
 -------------------------------------------  执行接收到的Lua脚本 -------------------------------------------
 Debugger.debuggerLua = function(str)
   local res = {}
-  local luatb = net.json2lua(str)
-  if luatb.state == "loadstring" then
+  local request = net.json2lua(str)
+  if request.env == "loadstring" then
     res.type = "loadstring"
     local status, retval =
       pcall(
       function()
-        local fun = loadstring(luatb.lua_string)
+        local fun = loadstring(request.content)
         return fun()
       end
     )
@@ -68,7 +68,7 @@ Debugger.debuggerLua = function(str)
     Debugger.net.sendMsg(res)
   else
     res.type = "dostring_in"
-    local result, fettle = net.dostring_in(luatb.state, luatb.lua_string)
+    local result, fettle = net.dostring_in(request.env, request.content)
     if #result > 0 then
       local status, retval =
         pcall(
