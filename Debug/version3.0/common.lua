@@ -26,6 +26,15 @@ Debugger.isEmptytb = function(tbl)
     return true
   end
 end
+Debugger.dostring_api_env = function(s)
+  local f, err = loadstring(s)
+  if f then
+    return true, f()
+  else
+    return false, err
+  end
+end
+
 -------------------------------------------  定义Debugger的net  -------------------------------------------
 Debugger.net.sendData = function(data)
   net.log("sendDataTo --> " .. UDP.host .. ":" .. UDP.port)
@@ -89,7 +98,7 @@ Debugger.lua_str = function(request)
       msg.data = "执行成功"
     end
   elseif request.type == "api_loadstring" then
-    local status, retval = dostring_api_env(request.content)
+    local status, retval = Debugger.dostring_api_env(request.content)
     msg.status = status
     msg.data = retval
     if status and retval == nil then
@@ -97,12 +106,4 @@ Debugger.lua_str = function(request)
     end
   end
   return msg
-end
-function dostring_api_env(s)
-  local f, err = loadstring(s)
-  if f then
-    return true, f()
-  else
-    return false, err
-  end
 end
