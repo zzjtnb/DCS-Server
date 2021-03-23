@@ -1,3 +1,4 @@
+net.log("INFO: 资源系统Callbaks->正在加载...")
 local loadVersion = "Version3.0"
 local status, error =
   pcall(
@@ -25,7 +26,7 @@ local status, error =
   end
 )
 if (not status) then
-  net.log(string.format("资源系统Callbaks加载失败:%s", error))
+  net.log(string.format("ERROR: 资源系统Callbaks加载失败:%s", error))
 else
-  net.log("资源系统Callbaks全部加载完毕")
+  net.log("INFO: 资源系统Callbaks->全部加载完毕...")
 end

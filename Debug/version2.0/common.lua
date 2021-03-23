@@ -47,7 +47,7 @@ Debugger.net.getTimeStamp = function()
   }
 end
 Debugger.net.sendMsg = function(msg)
-  msg.timeS = Debugger.net.getTimeStamp()
+  msg.executionTime = Debugger.net.getTimeStamp()
   Debugger.net.sendJSON(msg)
 end
 -------------------------------------------  执行接收到的Lua脚本 -------------------------------------------

@@ -1,6 +1,4 @@
 LoadMissionScript = LoadMissionScript or {}
-
-net.log("加载任务脚本 初始化: 正在加载" .. "...")
 do
   function LoadMissionScript.error(msg)
     msg = tostring(msg)
@@ -19,6 +17,7 @@ do
     local newMsg = "加载任务脚本 INFO: " .. msg
     net.log(newMsg)
   end
+  LoadMissionScript.info("初始化:正在加载...")
   --加载任务环境脚本
   local curMSf, err = io.open("./Scripts/MissionScripting.lua", "r")
   if curMSf then
