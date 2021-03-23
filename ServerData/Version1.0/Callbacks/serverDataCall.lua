@@ -5,9 +5,37 @@ ServerData.playList = ServerData.playList or {}
 ServerData.callbacks = ServerData.callbacks or {}
 function ServerData.callbacks.onMissionLoadEnd()
   local data = ServerData.getServerStamp()
-  data.mname = DCS.getMissionName()
-  data.fname = DCS.getMissionFilename()
+  DCS.getMissionOptions() --返回'mission.options'的值
+  data.mname = DCS.getMissionName() --返回当前任务的名称
+  data.fname = DCS.getMissionFilename() --返回当前任务的文件名
+  data.description = DCS.getMissionDescription() --任务描述
+  data.currentMission = DCS.getCurrentMission() --当前任务
   Debugger.net.send_udp_msg({type = "serverData", event = "onMissionLoadEnd", data = data})
+  --[[
+      --返回阵营可用插槽列表。
+      DCS.getAvailableCoalitions()
+      --获取指定阵营的可用插槽(注意:返回的unitID实际上是一个slotID,对于多座单位它是
+      DCS.getAvailableSlots(coalitionID) 'unitID_seatID')
+      --获取单位属性
+      DCS.getUnitProperty(missionId, propertyId)
+      --从配置状态读取一个值。
+      DCS.getConfigValue(cfg_path_string)
+      -> {{abstime,级别,子系统,消息},...},last_index 返回从给定索引开始的最新日志消息。
+      DCS.getLogHistory(from)
+      Usage:
+      local result = {}
+      local id_from = 0
+      local logHistory = {}
+      local logIndex = 0
+      logHistory, logIndex = DCS.getLogHistory(id_from)
+      result = {
+        logHistory = logHistory,
+        new_last_id = logIndex
+      }
+      return result
+
+     --log.write('WebGUI', log.DEBUG, string.format('%s returned %s!', requestString, net.lua2json(result)))
+  --]]
 end
 
 function ServerData.callbacks.onPlayerTrySendChat(playerID, msg, all)
@@ -61,4 +89,16 @@ function ServerData.callbacks.onGameEvent(eventName, playerID, ...)
   end
 end
 
+function ServerData.callbacks.onNetMissionEnd()
+  Debugger.net.send_udp_msg({type = "serverData", event = "onNetMissionEnd", data = {msg = "网络任务结束时"}})
+end
+function ServerData.callbacks.onNetDisconnect()
+  Debugger.net.send_udp_msg({type = "serverData", event = "onNetDisconnect", data = {msg = "网络断开连接"}})
+end
+function ServerData.callbacks.onSimulationStop()
+  local data = {msg = "游戏界面已停止"}
+  data.result_red = DCS.getMissionResult("red")
+  data.result_blue = DCS.getMissionResult("blue")
+  Debugger.net.send_udp_msg({type = "serverData", event = "onSimulationStop", data = data})
+end
 DCS.setUserCallbacks(ServerData.callbacks)
