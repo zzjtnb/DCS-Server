@@ -13,9 +13,6 @@ if TCP == nil then
   -- local ip, port = server:getsockname()
   -- net.log("DCS API Server: Started on Port " .. port .. " at " .. ip)
 
-  package.path = package.path .. ";./LuaSocket/?.lua"
-  package.path = package.path .. ";./Scripts/?.lua"
-  package.cpath = package.cpath .. ";./LuaSocket/?.dll"
   local socket = require("socket")
   TCP.server = socket.tcp()
   assert(TCP.server:bind(TCP.host, TCP.port))

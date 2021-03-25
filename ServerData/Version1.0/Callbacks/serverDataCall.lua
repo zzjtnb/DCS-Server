@@ -4,13 +4,16 @@ ServerData.playList = ServerData.playList or {}
 ------------------------定义callback-----------------------
 ServerData.callbacks = ServerData.callbacks or {}
 function ServerData.callbacks.onMissionLoadEnd()
-  local data = ServerData.getServerStamp()
-  DCS.getMissionOptions() --返回'mission.options'的值
-  data.mname = DCS.getMissionName() --返回当前任务的名称
-  data.fname = DCS.getMissionFilename() --返回当前任务的文件名
-  data.description = DCS.getMissionDescription() --任务描述
-  data.currentMission = DCS.getCurrentMission() --当前任务
-  Debugger.net.send_udp_msg({type = "serverData", event = "onMissionLoadEnd", data = data})
+  local result = {
+    mission_name = DCS.getMissionName(), --返回当前任务的名称
+    mission_filename = DCS.getMissionFilename(), --返回当前任务的文件名
+    mission_description = DCS.getMissionDescription(), --任务描述
+    result_red = DCS.getMissionResult("red"),
+    result_blue = DCS.getMissionResult("blue"),
+    mission_current = DCS.getCurrentMission()["mission"] --当前任务
+  }
+  Debugger.net.send_udp_msg({type = "serverData", event = "onMissionLoadEnd", data = result})
+
   --[[
       --返回阵营可用插槽列表。
       DCS.getAvailableCoalitions()
@@ -68,16 +71,10 @@ function ServerData.callbacks.onGameEvent(eventName, playerID, ...)
   end
   net.log(net.lua2json(arg))
   calls.change_slot = ServerData.change_slot
-  calls.connect = ServerData.connect
-  calls.disconnect = ServerData.disconnect
   calls.crash = ServerData.crash
-  calls.eject = ServerData.eject
-  calls.friendly_fire = onGameStub
+  -- calls.friendly_fire = onGameStub
   calls.kill = ServerData.kill
   calls.landing = ServerData.landing
-  calls.mission_end = onGameStub
-  calls.pilot_death = ServerData.pilot_death
-  calls.self_kill = ServerData.self_kill
   calls.takeoff = ServerData.takeoff
   local call = calls[eventName]
   if call ~= nil then
@@ -88,13 +85,47 @@ function ServerData.callbacks.onGameEvent(eventName, playerID, ...)
     ServerData.net.log("ERROR: 游戏事件上未注册事件:" .. eventName)
   end
 end
-
+function ServerData.callbacks.onGameBdaEvent(eventName, arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+  --log.write('WebGUI', log.DEBUG, string.format('%s called!', requestString))
+  local data = {
+    arg1 = arg1,
+    arg2 = arg2,
+    arg3 = arg3,
+    arg4 = arg4,
+    arg5 = arg5,
+    arg6 = arg6,
+    arg7 = arg7
+  }
+  ServerData.net.log("onGameEvent -> " .. eventName .. ":" .. net.lua2json(data), true)
+end
 function ServerData.callbacks.onNetMissionEnd()
   Debugger.net.send_udp_msg({type = "serverData", event = "onNetMissionEnd", data = {msg = "网络任务结束时"}})
 end
 function ServerData.callbacks.onNetDisconnect()
   Debugger.net.send_udp_msg({type = "serverData", event = "onNetDisconnect", data = {msg = "网络断开连接"}})
 end
+
+-- function ServerData.callbacks.onWebServerRequest(requestString, requestParams)
+--   --log.write('WebGUI', log.DEBUG, string.format('%s called!', requestString))
+--   net.log(requestString, requestParams)
+-- end
+
+function ServerData.callbacks.onShowBriefing()
+  net.log("测试onShowBriefing")
+end
+function ServerData.callbacks.onDebriefingEvent(e)
+  print("--测试onDebriefingEvent----", e)
+end
+function ServerData.callbacks.onUpdateScore()
+  net.log("测试onUpdateScore")
+end
+function ServerData.callbacks.onShowPool()
+  net.log("测试onShowPool")
+end
+function ServerData.callbacks.onPlayerChangeSlot()
+  net.log("测试onPlayerChangeSlot")
+end
+
 function ServerData.callbacks.onSimulationStop()
   local data = {msg = "游戏界面已停止"}
   data.result_red = DCS.getMissionResult("red")

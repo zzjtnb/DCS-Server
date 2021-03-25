@@ -1,11 +1,8 @@
-net.log("正在加TCP.lua ...")
+--- LuaSocket TCP 服务端 -- LuaSocket TCP Server
 TCP = TCP or {}
 TCP.host = "localhost"
 TCP.port = "20200"
 --------------------------------    定义TCP的callbacks  --------------------------------
-package.path = package.path .. ";./LuaSocket/?.lua"
-package.path = package.path .. ";./Scripts/?.lua"
-package.cpath = package.cpath .. ";./LuaSocket/?.dll"
 local socket = require("socket")
 -- 看来s = socket.bind(…)实际上等效于：
 -- s = socket.tcp()
@@ -54,4 +51,3 @@ function Step()
     end
   end
 end
-net.log("TCP.lua加载完毕")
