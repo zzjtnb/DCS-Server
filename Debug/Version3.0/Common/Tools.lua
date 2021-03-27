@@ -65,8 +65,8 @@ Tools.net.sendData = function(data)
     TCP.client_connect()
   end
   local ip, port = TCP.client:getsockname()
-  net.log("SendDataTo-->" .. ip .. ":" .. port)
-  net.log("SendJSON-->" .. data)
+  net.log('SendDataTo-->' .. ip .. ':' .. port)
+  net.log('SendJSON-->' .. data)
   TCP.client_send(data)
 end
 Tools.net.sendJSON = function(data)
@@ -74,7 +74,7 @@ Tools.net.sendJSON = function(data)
 end
 Tools.net.getTimeStamp = function()
   local _TempData = {
-    os = os.date("%Y-%m-%d %H:%M:%S"),
+    os = os.date('%Y-%m-%d %H:%M:%S'),
     real = DCS.getRealTime(),
     model = DCS.getModelTime()
   }
@@ -89,9 +89,9 @@ end
 Tools.net.server_send_msg = function(data)
   data.executionTime = Tools.net.getTimeStamp()
   data = net.lua2json(data)
-  net.log("process_request --> " .. data)
+  net.log('process_request --> ' .. data)
   if TCP.server_client then
-    local bytes, status, lastbyte = TCP.server_client:send(data .. "\r\n")
+    local bytes, status, lastbyte = TCP.server_client:send(data .. '\r\n')
   -- net.log(bytes, status, lastbyte)
   end
 end
@@ -100,7 +100,7 @@ end
 Tools.lua_str = function(request)
   local msg = {}
   msg.type = request.type
-  if request.type == "net_dostring" then
+  if request.type == 'net_dostring' then
     local res, fettle = net.dostring_in(request.env, request.content) -- res is a string
     -- 'server': holds the current mission when multiplayer? server only
     -- 'config': the state in which $INSTALL_DIR/Config/main.cfg is executed, as well as $WRITE_DIR/Config/autoexec.cfg
@@ -122,14 +122,14 @@ Tools.lua_str = function(request)
       end
     else
       msg.status = fettle
-      msg.data = "执行成功"
+      msg.data = '执行成功'
     end
-  elseif request.type == "api_loadstring" then
+  elseif request.type == 'api_loadstring' then
     local status, retval = Tools.dostring_api_env(request.content)
     msg.status = status
     msg.data = retval
     if status and retval == nil then
-      msg.data = "执行成功"
+      msg.data = '执行成功'
     end
   end
   if request.from then

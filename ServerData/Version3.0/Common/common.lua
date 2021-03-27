@@ -18,12 +18,12 @@ ServerData.testServer = function(id)
   return id == net.get_server_id()
 end
 ServerData.getServerStamp = function()
-  return {ucid = nil, alias = "SERVER"}
+  return {ucid = nil, alias = 'SERVER'}
 end
 ServerData.client_send_msg = function(event, data)
   if data ~= nil then
     local result = {
-      type = "serverData",
+      type = 'serverData',
       event = event,
       data = data,
       executionTime = {

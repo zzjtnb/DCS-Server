@@ -6,15 +6,15 @@ function SaveData.creatDir(path, name)
 end
 
 function SaveData.creatFile(path, name, data)
-  local FilePath = path .. "\\" .. name
-  local LogFile = io.open(FilePath, "a")
+  local FilePath = path .. '\\' .. name
+  local LogFile = io.open(FilePath, 'a')
   if LogFile then
-    LogFile:write(data .. "\n")
+    LogFile:write(data .. '\n')
     LogFile:close()
   end
 end
 function SaveData.file_exists(path)
-  local file = io.open(path, "rb")
+  local file = io.open(path, 'rb')
   if file then
     file:close()
   end
