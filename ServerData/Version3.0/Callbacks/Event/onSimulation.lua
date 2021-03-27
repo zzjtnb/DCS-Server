@@ -25,7 +25,7 @@ ServerData.callbacks.onSimulationFrame = function()
     local _all_players = net.get_player_list()
     for PlayerIDIndex, _playerID in ipairs(_all_players) do
       if _playerID ~= 1 then
-        ServerData.LogStatsCount(_playerID, "timer", true)
+        ServerData.LogStatsCount(_playerID, 'timer', true)
       end
     end
   end
@@ -35,7 +35,7 @@ end
 ServerData.callbacks.onSimulationStop = function()
   -- 游戏界面已停止
   -- Simulation was stopped
-  ServerData.LogEvent("SimStop", "Mission " .. ServerData.MissionHash .. " finished", nil, nil)
+  ServerData.LogEvent('SimStop', 'Mission ' .. ServerData.MissionHash .. ' finished', nil, nil)
   ServerData.LogAllStats()
   ServerData.MissionHash = ServerData.GenerateMissionHash()
   ServerData.StatData = {}

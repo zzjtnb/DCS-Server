@@ -1,7 +1,7 @@
 --- LuaSocket TCP_Server 服务端 -- LuaSocket TCP_Server Server
-local host = "localhost"
-local port = "10505"
-local socket = require("socket")
+local host = 'localhost'
+local port = '10505'
+local socket = require('socket')
 -- 看来s = socket.bind(…)实际上等效于：
 -- s = socket.tcp()
 -- s:bind(…)
@@ -14,7 +14,7 @@ local socket = require("socket")
 -- local client = server:accept()
 TCP.server = assert(socket.bind(host, port))
 TCP.server:settimeout(0.001) --设置超时时间
-TCP.server:setoption("reuseaddr", true) --重用地址
+TCP.server:setoption('reuseaddr', true) --重用地址
 
 function Step()
   if TCP.server then
@@ -53,7 +53,7 @@ function Step()
           Tools.net.server_send_msg(result)
         else
           net.log(request) -- log error
-          Tools.net.client_send_msg({type = "serverStatus", data = {msg = "调试lua失败:" .. request}})
+          Tools.net.client_send_msg({type = 'serverStatus', data = {msg = '调试lua失败:' .. request}})
         end
       end
       -- done with client, close the object

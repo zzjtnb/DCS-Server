@@ -1,5 +1,5 @@
 --Initialization script for the Mission lua Environment (SSE)
-dofile("Scripts/ScriptingSystem.lua")
+dofile('Scripts/ScriptingSystem.lua')
 -- -- Add LuaSocket to the LUAPATH, so that it can be found.
 -- package.path = package.path .. ';.\\LuaSocket\\?.lua;'
 -- package.cpath = package.cpath .. ';.\\LuaSocket\\?.dll'
@@ -15,7 +15,7 @@ dofile("Scripts/ScriptingSystem.lua")
 -- initconnection('127.0.0.1', 10000, 'dcsserver', nil, 'win', 'D:\\Office\\Java\\workspace\\DCS World')
 
 ----------------------------------------------------任务环境脚本----------------------------------------------------
-dofile(lfs.writedir() .. "Scripts/Source/Version3.0/Mission/SourceInit.lua")
+dofile(lfs.writedir() .. 'Scripts/Source/Version3.0/Mission/SourceInit.lua')
 --------------------------------------------------测试脚本从这里开始.-----------------------------------------------------
 -----------------------------------------------------清理任务脚本环境----------------------------------------------------
 --Sanitize Mission Scripting environment
@@ -31,7 +31,7 @@ do
   -- sanitizeModule("os")
   -- sanitizeModule("io")
   -- sanitizeModule("lfs")
-  sanitizeModule("debug") -- 恶意任务无法脱离沙盒并使用LuaSocket。
+  sanitizeModule('debug') -- 恶意任务无法脱离沙盒并使用LuaSocket。
   -- require = nil
   -- loadlib = nil
 end

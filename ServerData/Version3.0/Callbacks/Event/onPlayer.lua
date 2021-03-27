@@ -8,10 +8,10 @@ ServerData.callbacks.onPlayerTrySendChat = function(playerID, msg, all)
   -- Somebody tries to send chat message
   if msg ~= ServerData.MOTD_L1 and msg ~= ServerData.MOTD_L2 and msg ~= ServerData.ConnectionError then
     ServerData.LogChat(playerID, msg, all)
-    if string.find(msg, "qq ") == 1 then
+    if string.find(msg, 'qq ') == 1 then
       local data = net.get_player_info(playerID)
       if data ~= nil then
-        Tools.net.client_send_msg({type = "serverData", event = "updateQQ", data = {qq = msg, ucid = data.ucid}})
+        Tools.net.client_send_msg({type = 'serverData', event = 'updateQQ', data = {qq = msg, ucid = data.ucid}})
       -- local cmd, err = UDP.udp:receive()
       -- print("------------接收UDP消息----------------")
       -- print(cmd)
@@ -33,12 +33,12 @@ ServerData.callbacks.onPlayerTrySendChat = function(playerID, msg, all)
 end
 ServerData.callbacks.onPlayerDisconnect = function(id, err_code)
   -- Player disconnected
-  ServerData.LogEvent("disconnect", "Player " .. id .. " disconnected.", nil, nil)
+  ServerData.LogEvent('disconnect', 'Player ' .. id .. ' disconnected.', nil, nil)
   return
 end
 
 ServerData.callbacks.onPlayerStop = function(id)
   -- Player left the simulation (happens right before a disconnect, if player exited by desire)
-  ServerData.LogEvent("quit", "Player " .. id .. " quit the server.", nil, nil)
+  ServerData.LogEvent('quit', 'Player ' .. id .. ' quit the server.', nil, nil)
   return
 end
