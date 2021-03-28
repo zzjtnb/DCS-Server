@@ -257,7 +257,8 @@ ServerData.LogEvent = function(log_type, log_content, log_arg_1, log_arg_2)
 end
 ---记录单个玩家数据
 ---@param playerID any --玩家ID
-ServerData.LogStats = function(playerID)
+---@param event string --事件名称
+ServerData.LogStats = function(playerID, event)
   -- Log player status
   local _PlayerStatsTable = ServerData.LogStatsGet(playerID)
   local _TempData = {}
@@ -269,9 +270,12 @@ ServerData.LogStats = function(playerID)
   _TempData['stat_name'] = _PlayerStatsTable['name']
   _TempData['stat_datetime'] = os.date('%Y-%m-%d %H:%M:%S')
   _TempData['stat_missionhash'] = ServerData.MissionHash
-
   Logger.AddLog('Sending stats data', 1)
-  ServerData.client_send_msg('LogStats', _TempData)
+  if event ~= nil then
+    ServerData.client_send_msg('LogStats', _TempData)
+  else
+    ServerData.client_send_msg(event, _TempData)
+  end
 end
 ---记录所有玩家数据
 ServerData.LogAllStats = function()
@@ -279,7 +283,7 @@ ServerData.LogAllStats = function()
   local _all_players = net.get_player_list()
   for PlayerIDIndex, _playerID in ipairs(_all_players) do
     if _playerID ~= 1 then
-      ServerData.LogStats(_playerID)
+      ServerData.LogStats(_playerID, 'LogAllStats')
     end
   end
 end
