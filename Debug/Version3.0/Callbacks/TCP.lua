@@ -40,6 +40,12 @@ function TCP.callbacks.onNetDisconnect(reason_msg, err_code)
   TCP.do_step = false
 end
 function TCP.callbacks.onMissionLoadBegin()
+  local host = 'localhost'
+  local port = '10505'
+  local socket = require('socket')
+  if TCP.server == nil or TCP.server == Tools.isEmptytb(TCP.server) then
+    TCP.server = assert(socket.bind(host, port))
+  end
   Tools.net.client_send_msg({type = 'serverStatus', data = {msg = '开始加载任务...'}})
 end
 function TCP.callbacks.onMissionLoadEnd()

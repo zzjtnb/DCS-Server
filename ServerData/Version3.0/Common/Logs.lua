@@ -257,7 +257,8 @@ ServerData.LogEvent = function(log_type, log_content, log_arg_1, log_arg_2)
 end
 ---记录单个玩家数据
 ---@param playerID any --玩家ID
-ServerData.LogStats = function(playerID)
+---@param event string --事件名称
+ServerData.LogStats = function(playerID, event)
   -- Log player status
   local _PlayerStatsTable = ServerData.LogStatsGet(playerID)
   local _TempData = {}
@@ -269,9 +270,12 @@ ServerData.LogStats = function(playerID)
   _TempData['stat_name'] = _PlayerStatsTable['name']
   _TempData['stat_datetime'] = os.date('%Y-%m-%d %H:%M:%S')
   _TempData['stat_missionhash'] = ServerData.MissionHash
-
   Logger.AddLog('Sending stats data', 1)
-  ServerData.client_send_msg('LogStats', _TempData)
+  if event ~= nil then
+    ServerData.client_send_msg('LogStats', _TempData)
+  else
+    ServerData.client_send_msg(event, _TempData)
+  end
 end
 ---记录所有玩家数据
 ServerData.LogAllStats = function()
@@ -279,7 +283,7 @@ ServerData.LogAllStats = function()
   local _all_players = net.get_player_list()
   for PlayerIDIndex, _playerID in ipairs(_all_players) do
     if _playerID ~= 1 then
-      ServerData.LogStats(_playerID)
+      ServerData.LogStats(_playerID, 'LogAllStats')
     end
   end
 end
@@ -289,13 +293,13 @@ end
 ServerData.LogLogin = function(playerID)
   -- Player logged in
   local _TempData = {}
-  _TempData['login_ucid'] = net.get_player_info(playerID, 'ucid')
-  _TempData['login_ipaddr'] = net.get_player_info(playerID, 'ipaddr')
-  _TempData['login_name'] = net.get_player_info(playerID, 'name')
-  _TempData['login_datetime'] = os.date('%Y-%m-%d %H:%M:%S')
-
+  _TempData['name'] = net.get_player_info(playerID, 'name')
+  _TempData['ucid'] = net.get_player_info(playerID, 'ucid')
+  _TempData['lang'] = net.get_player_info(playerID, 'lang')
+  _TempData['ping'] = net.get_player_info(playerID, 'ping')
+  _TempData['ipaddr'] = net.get_player_info(playerID, 'ipaddr')
   Logger.AddLog('Sending login event', 1)
-  ServerData.client_send_msg('LogLogin', _TempData)
+  ServerData.client_send_msg('playerLogin', _TempData)
 end
 
 -- ################################ Calculate stats(计算统计) ################################
@@ -545,15 +549,19 @@ ServerData.UpdateMission = function()
   -- Check if we need to get mission data
   -- 检查我们是否需要获取任务数据
   if ServerData.isEmptytb(ServerData.MissionData) then
-    local mission = DCS.getCurrentMission()
+    local mission = DCS.getCurrentMission()['mission']
+    local date = os.time {year = mission['date'].Year, month = mission['date'].Month, day = mission['date'].Day}
     ServerData.MissionData = {
-      mission_name = DCS.getMissionName(), --返回当前任务的名称
-      mission_filename = DCS.getMissionFilename(), --返回当前任务的文件名
-      mission_description = DCS.getMissionDescription(), --任务描述
+      name = DCS.getMissionName(), --返回当前任务的名称
+      filename = DCS.getMissionFilename(), --返回当前任务的文件名
+      description = DCS.getMissionDescription(), --任务描述
+      theatre = mission['theatre'],
+      map = mission['map'],
+      coalition = mission['coalition'],
       result_red = DCS.getMissionResult('red'),
       result_blue = DCS.getMissionResult('blue'),
-      mission_current = mission['mission'], --获取任务信息
-      theatre = mission['theatre']
+      missionhash = ServerData.MissionHash,
+      date = os.date('%Y-%m-%d', date)
     }
   --[[
       --返回阵营可用插槽列表。
