@@ -32,6 +32,7 @@ function TCP.read_some(s)
     return status, partial
   elseif status == 'timeout' then
     net.log('SendError-->发送超时,' .. status)
+    TCP.client_connect()
   else
     net.log('SendError-->发送失败,远程服务器没有开启.', msg, status)
   end

@@ -72,7 +72,6 @@ function TCP.callbacks.onSimulationFrame()
 end
 function TCP.callbacks.onSimulationStop()
   Tools.net.client_send_msg({type = 'serverStatus', data = {msg = '游戏界面已停止'}})
-  TCP.server:close()
   net.log('API CONTROL SERVER TERMINATED')
 end
 
