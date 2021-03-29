@@ -21,18 +21,14 @@ ServerData.callbacks.onGameEvent = function(eventName, arg1, arg2, arg3, arg4, a
     local _temp_victims = ''
     if net.get_player_info(arg4, 'name') ~= nil then
       _temp_victims = ' player(s) ' .. ServerData.GetMulticrewCrewNames(arg4) .. ' '
-
       ServerData.LogStats(arg4)
     else
       _temp_victims = ' AI '
     end
-
     if net.get_player_info(arg1, 'name') ~= nil then
       _temp_killers = ' player(s) ' .. ServerData.GetMulticrewCrewNames(arg1) .. ' '
-
       if arg3 ~= arg6 then
         _temp_category = ServerData.GetCategory(arg5)
-
         if _temp_category == 'Planes' then
           _temp_event_type = 'kill_Planes'
         elseif _temp_category == 'Helicopters' then
@@ -62,16 +58,13 @@ ServerData.callbacks.onGameEvent = function(eventName, arg1, arg2, arg3, arg4, a
       end
       ServerData.LogStatsCountCrew(arg1, _temp_event_type)
     end
-
     if arg7 == '' then
       arg7 = 'Cannon'
     end
-
     local victim_vehicle = arg5
     if victim_vehicle == '' then
       victim_vehicle = '?'
     end
-
     ServerData.LogEvent(eventName, ServerData.SideID2Name(arg3) .. _temp_killers .. ' in ' .. arg2 .. ' killed ' .. ServerData.SideID2Name(arg6) .. _temp_victims .. ' in ' .. victim_vehicle .. ' using ' .. arg7 .. ' [' .. ServerData.GetCategory(arg5) .. ']', arg7, ServerData.GetCategory(arg5))
   elseif eventName == 'self_kill' then
     --"self_kill", playerID
@@ -79,7 +72,6 @@ ServerData.callbacks.onGameEvent = function(eventName, arg1, arg2, arg3, arg4, a
     ServerData.LogEvent(eventName, net.get_player_info(arg1, 'name') .. ' killed himself', nil, nil)
   elseif eventName == 'change_slot' then
     --"change_slot", playerID, slotID, prevSide
-
     local _master_type, _master_slot, _sub_slot = ServerData.GetMulticrewAllParameters(arg1)
     if _sub_slot == nil then
       _sub_slot = ''
@@ -87,7 +79,6 @@ ServerData.callbacks.onGameEvent = function(eventName, arg1, arg2, arg3, arg4, a
       _sub_slot = ' (' .. _sub_slot .. ')  '
     end
     ServerData.LogEvent(eventName, ServerData.SideID2Name(net.get_player_info(arg1, 'side')) .. ' player ' .. net.get_player_info(arg1, 'name') .. ' changed slot to ' .. _master_type .. ' ' .. _sub_slot, nil, nil)
-
     ServerData.LogStats(arg1)
     ServerData.LogStatsCount(arg1, 'init')
     ServerData.PlayersTableCache['p' .. arg1] = net.get_player_info(arg1)

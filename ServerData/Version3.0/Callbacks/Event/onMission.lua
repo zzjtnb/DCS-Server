@@ -1,7 +1,7 @@
 ServerData.callbacks.onMissionLoadEnd = function()
   -- Simulation was started
   ServerData.MissionHash = ServerData.GenerateMissionHash()
-  ServerData.LogEvent('SimStart', 'Mission ' .. ServerData.MissionHash .. ' started', nil, nil)
+  ServerData.LogEvent('onMissionLoadEnd', 'Mission ' .. ServerData.MissionHash .. ' started', nil, nil)
   ServerData.StatData = {}
   ServerData.StatDataLastType = {}
   ServerData.PlayersTableCache = {}

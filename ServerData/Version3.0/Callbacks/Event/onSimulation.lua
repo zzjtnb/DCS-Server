@@ -35,7 +35,7 @@ end
 ServerData.callbacks.onSimulationStop = function()
   -- 游戏界面已停止
   -- Simulation was stopped
-  ServerData.LogEvent('SimStop', 'Mission ' .. ServerData.MissionHash .. ' finished', nil, nil)
+  ServerData.LogEvent('onSimulationStop', 'Mission ' .. ServerData.MissionHash .. ' finished', nil, nil)
   ServerData.LogAllStats()
   ServerData.MissionHash = ServerData.GenerateMissionHash()
   ServerData.StatData = {}

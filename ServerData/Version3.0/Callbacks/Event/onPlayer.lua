@@ -33,12 +33,12 @@ ServerData.callbacks.onPlayerTrySendChat = function(playerID, msg, all)
 end
 ServerData.callbacks.onPlayerDisconnect = function(id, err_code)
   -- Player disconnected
-  ServerData.LogEvent('disconnect', 'Player ' .. id .. ' disconnected.', nil, nil)
+  ServerData.LogEvent('onPlayerDisconnect', 'Player ' .. id .. ' disconnected.', nil, nil)
   return
 end
 
 ServerData.callbacks.onPlayerStop = function(id)
   -- Player left the simulation (happens right before a disconnect, if player exited by desire)
-  ServerData.LogEvent('quit', 'Player ' .. id .. ' quit the server.', nil, nil)
+  ServerData.LogEvent('onPlayerStop', 'Player ' .. id .. ' quit the server.', nil, nil)
   return
 end
