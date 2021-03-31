@@ -1,22 +1,25 @@
 -- 变量初始化(Variable init)
-ServerData = ServerData or {}
+ServerData = {}
+ServerData.onEvent = {}
 ServerData.lastTimer = 0
 ServerData.Version = '3.0'
 ServerData.MissionHash = ''
 ServerData.lastFrameTime = 0
 ServerData.lastSentStatus = 0
 ServerData.lastFrameStart = 0
-ServerData.net = ServerData.net or {}
-ServerData.playList = ServerData.playList or {}
-ServerData.StatData = ServerData.StatData or {}
-ServerData.callbacks = ServerData.callbacks or {}
-ServerData.SlotsData = ServerData.SlotsData or {}
-ServerData.StatusData = ServerData.StatusData or {}
-ServerData.MissionData = ServerData.MissionData or {}
-ServerData.StatDataLastType = ServerData.StatDataLastTyp or {}
+ServerData.net = {}
+ServerData.playList = {}
+ServerData.StatData = {}
+ServerData.callbacks = {}
+ServerData.SlotsData = {}
+ServerData.StatusData = {}
+ServerData.MissionData = {}
+ServerData.SinglePlayer = {}
+ServerData.StatDataLastType = {}
+
 -- 连接(Connection)
--- (int) [default: 3600] Base refresh rate in seconds to send status update
--- (int) [默认值: 3600] 发送状态更新的基本刷新率(秒)
+-- (int) [default: 900] Base refresh rate in seconds to send status update
+-- (int) [默认值: 900] 发送状态更新的基本刷新率(秒)
 ServerData.RefreshStatus = 60
 -- 任务配置(Mission Configuration)
 -- (int) [default: 300] Number of secounds after mission start when death of the pilot will not go to statistics, shall avoid death penalty during spawning DCS bugs

@@ -9,13 +9,14 @@ ServerData.callbacks.onSimulationFrame = function()
     ServerData.lastSentMission = _now
     ServerData.UpdateMission()
     ServerData.UpdateSlots()
-    ServerData.UpdateStatus()
   end
   -- Send status update - update required
   -- 发送状态更新-需要更新
   if _now > ServerData.lastSentStatus + ServerData.RefreshStatus then
     ServerData.lastSentStatus = _now
-    ServerData.UpdateStatus()
+    if not ServerData.isEmptytb(ServerData.StatData) then
+      ServerData.UpdateStatus()
+    end
   end
 
   -- Calucalate time on slot per each of players
@@ -23,9 +24,9 @@ ServerData.callbacks.onSimulationFrame = function()
   if _now > ServerData.lastTimer + 60 then
     ServerData.lastTimer = _now
     local _all_players = net.get_player_list()
-    for PlayerIDIndex, _playerID in ipairs(_all_players) do
+    for _, _playerID in ipairs(_all_players) do
       if _playerID ~= 1 then
-        ServerData.LogStatsCount(_playerID, 'timer', true)
+        ServerData.LogStatsCount(_playerID, 'timer')
       end
     end
   end
@@ -35,10 +36,10 @@ end
 ServerData.callbacks.onSimulationStop = function()
   -- 游戏界面已停止
   -- Simulation was stopped
-  ServerData.LogEvent('onSimulationStop', 'Mission ' .. ServerData.MissionHash .. ' finished', nil, nil)
   ServerData.LogAllStats()
   ServerData.MissionHash = ServerData.GenerateMissionHash()
   ServerData.StatData = {}
+  ServerData.SinglePlayer = {}
   ServerData.MissionData = {}
   ServerData.StatDataLastType = {}
   ServerData.PlayersTableCache = {}
