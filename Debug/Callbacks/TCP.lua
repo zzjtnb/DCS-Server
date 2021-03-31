@@ -8,7 +8,7 @@ function TCP.callbacks.onNetConnect(localPlayerID)
   net.log('启动DCS API CONTROL服务器')
   local ip, port = TCP.server:getsockname()
   local msg = string.format('DCS API Server started on at %s:%s', ip, port)
-  Tools.net.client_send_msg({type = 'serverStatus', data = {msg = msg}})
+  Tools.net.client_send_msg({type = 'ServerStatus', data = {msg = msg}})
   --[[
     -- map slot and id and things
     NetSlotInfo = {} -- reset NetSlotInfo
@@ -34,27 +34,21 @@ end
 function TCP.callbacks.onNetDisconnect(reason_msg, err_code)
   net.log('onNetDisconnect-->网络已断开连接')
   local msg = string.format('DCS API Server stoped ')
-  Tools.net.client_send_msg({type = 'serverStatus', data = {msg = msg}})
+  Tools.net.client_send_msg({type = 'ServerStatus', data = {msg = msg}})
   -- onSimulationFrame can't start step()
   -- onSimulationFrame不能启动step()
   TCP.do_step = false
 end
 function TCP.callbacks.onMissionLoadBegin()
-  local host = 'localhost'
-  local port = '10505'
-  local socket = require('socket')
-  if TCP.server == nil or TCP.server == Tools.isEmptytb(TCP.server) then
-    TCP.server = assert(socket.bind(host, port))
-  end
-  Tools.net.client_send_msg({type = 'serverStatus', data = {msg = '开始加载任务...'}})
+  Tools.net.client_send_msg({type = 'ServerStatus', data = {msg = '开始加载任务...'}})
 end
 function TCP.callbacks.onMissionLoadEnd()
   TCP.mission_start_time = DCS.getRealTime() --需要防止CTD引起的C Lua的API上net.pause和net.resume
-  Tools.net.client_send_msg({type = 'serverStatus', data = {msg = '任务加载结束...'}})
+  Tools.net.client_send_msg({type = 'ServerStatus', data = {msg = '任务加载结束...'}})
 end
 function TCP.callbacks.onSimulationStart()
   if DCS.getRealTime() > 0 then
-    Tools.net.client_send_msg({type = 'serverStatus', data = {msg = '游戏界面开始运行,可以开始调试Lua脚本'}})
+    Tools.net.client_send_msg({type = 'ServerStatus', data = {msg = '游戏界面开始运行,可以开始调试Lua脚本'}})
   end
 end
 local step_frame_count = 0
@@ -71,8 +65,7 @@ function TCP.callbacks.onSimulationFrame()
   end
 end
 function TCP.callbacks.onSimulationStop()
-  Tools.net.client_send_msg({type = 'serverStatus', data = {msg = '游戏界面已停止'}})
-  TCP.server:close()
+  Tools.net.client_send_msg({type = 'ServerStatus', data = {msg = '游戏界面已停止'}})
   net.log('API CONTROL SERVER TERMINATED')
 end
 

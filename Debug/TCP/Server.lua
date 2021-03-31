@@ -53,7 +53,7 @@ function Step()
           Tools.net.server_send_msg(result)
         else
           net.log(request) -- log error
-          Tools.net.client_send_msg({type = 'serverStatus', data = {msg = '调试lua失败:' .. request}})
+          Tools.net.client_send_msg({type = 'ServerStatus', data = {msg = '调试lua失败:' .. request}})
         end
       end
       -- done with client, close the object

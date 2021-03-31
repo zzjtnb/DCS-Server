@@ -23,7 +23,7 @@ end
 ServerData.client_send_msg = function(event, data)
   if data ~= nil then
     local result = {
-      type = 'serverData',
+      type = 'ServerData',
       event = event,
       data = data,
       executionTime = {
