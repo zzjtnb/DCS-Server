@@ -1,34 +1,49 @@
+ArgsMergeTables = function(args, ...)
+  local tabs = {...}
+  if not tabs then
+    return {}
+  end
+  local origin = tabs[1]
+  for i = 2, #tabs do
+    if origin then
+      if tabs[i] then
+        for k, v in pairs(tabs[i]) do
+          if tabs[i][args] == origin[args] then
+            origin[k] = v
+          end
+        end
+      end
+    else
+      origin = tabs[i]
+    end
+  end
+  return origin
+end
+
 local JSON = require('JSON')
 local res = {}
 local res2 = {}
 
-local ucid = '05234122dsfsd56'
-
 local _TempData1 = {}
-_TempData1['kills_other'] = 0
-_TempData1['airfield_takeoffs'] = 0
+_TempData1['name'] = 'ddd'
+_TempData1['ucid'] = '15551'
+_TempData1['loginTime'] = os.date('%Y-%m-%d %H:%M:%S')
+
+local common = {}
+common['kills_other'] = 0
+common['airfield_takeoffs'] = 0
+common['ucid'] = '15551'
+common['loginTime'] = os.date('%Y-%m-%d %H:%M:%S')
 
 local _TempData2 = {}
-_TempData2['name'] = 'ddd'
-_TempData2['ucid'] = 'sdfsdf234sdf'
-local data = {}
-data['gameInfo'] = _TempData1
-res2[ucid] = data
-table.insert(res, res2)
-data['loginInfo'] = _TempData1
--- res2['gameInfo'] = _TempData1
-res2[ucid] = data
--- print(JSON:encode(data))
-print(JSON:encode(res2))
--- print(JSON:encode(res))
-local ucid2 = '23fsf234'
-res2[ucid2] = data
-print(JSON:encode(res2))
+_TempData2['name'] = 'aaa'
+_TempData2['ucid'] = '3242'
 
-local test = {}
-table.insert(test, 'ddd')
-table.insert(test, 'ddd')
-print(JSON:encode(test))
+local ucid = '05234122dsfsd56'
+res[ucid] = _TempData1
+res[ucid] = ArgsMergeTables('ucid', _TempData1, common)
+res['aaa'] = _TempData2
+print(JSON:encode(res))
 
 -- 字典型table
 local kvTbl = {id = 123, level = 99, score = 100}
