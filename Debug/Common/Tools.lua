@@ -30,6 +30,9 @@ Tools.isEmptytb = function(tbl)
     return true
   end
 end
+
+---合并两个table
+---@return table
 Tools.MergeTables = function(...)
   local tabs = {...}
   if not tabs then
@@ -41,6 +44,29 @@ Tools.MergeTables = function(...)
       if tabs[i] then
         for k, v in pairs(tabs[i]) do
           origin[k] = v
+        end
+      end
+    else
+      origin = tabs[i]
+    end
+  end
+  return origin
+end
+---按指定参数合并表
+---@return table 按参数合并后的表
+Tools.ArgsMergeTables = function(args, ...)
+  local tabs = {...}
+  if not tabs then
+    return {}
+  end
+  local origin = tabs[1]
+  for i = 2, #tabs do
+    if origin then
+      if tabs[i] then
+        for k, v in pairs(tabs[i]) do
+          if tabs[i][args] == origin[args] then
+            origin[k] = v
+          end
         end
       end
     else

@@ -1,21 +1,15 @@
 -- 变量初始化(Variable init)
 ServerData = {}
 ServerData.onEvent = {}
-ServerData.lastTimer = 0
-ServerData.Version = '3.0'
+ServerData.Version = '3.0.0'
 ServerData.MissionHash = ''
-ServerData.lastFrameTime = 0
 ServerData.lastSentStatus = 0
 ServerData.lastFrameStart = 0
-ServerData.net = {}
-ServerData.playList = {}
-ServerData.StatData = {}
+ServerData.PlayersData = {}
 ServerData.callbacks = {}
 ServerData.SlotsData = {}
 ServerData.StatusData = {}
 ServerData.MissionData = {}
-ServerData.SinglePlayer = {}
-ServerData.StatDataLastType = {}
 
 -- 连接(Connection)
 -- (int) [default: 900] Base refresh rate in seconds to send status update

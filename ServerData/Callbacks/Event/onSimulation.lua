@@ -14,34 +14,18 @@ ServerData.callbacks.onSimulationFrame = function()
   -- 发送状态更新-需要更新
   if _now > ServerData.lastSentStatus + ServerData.RefreshStatus then
     ServerData.lastSentStatus = _now
-    if not ServerData.isEmptytb(ServerData.StatData) then
+    if not ServerData.isEmptytb(ServerData.PlayersData) then
       ServerData.UpdateStatus()
     end
   end
-
-  -- Calucalate time on slot per each of players
-  -- 计算每个玩家在插槽上的时间
-  if _now > ServerData.lastTimer + 60 then
-    ServerData.lastTimer = _now
-    local _all_players = net.get_player_list()
-    for _, _playerID in ipairs(_all_players) do
-      if _playerID ~= 1 then
-        ServerData.LogStatsCount(_playerID, 'timer')
-      end
-    end
-  end
-  -- Calculate approx. frame time
-  ServerData.lastFrameTime = DCS.getRealTime() - _now
 end
+
 ServerData.callbacks.onSimulationStop = function()
   -- 游戏界面已停止
   -- Simulation was stopped
-  ServerData.LogAllStats()
   ServerData.MissionHash = ServerData.GenerateMissionHash()
-  ServerData.StatData = {}
-  ServerData.SinglePlayer = {}
+  ServerData.UpdateStatus()
   ServerData.MissionData = {}
-  ServerData.StatDataLastType = {}
   ServerData.PlayersTableCache = {}
   ServerData.SlotsData = {}
 end

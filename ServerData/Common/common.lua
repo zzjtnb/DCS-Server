@@ -27,8 +27,7 @@ ServerData.client_send_msg = function(event, data)
       event = event,
       data = data,
       executionTime = {
-        dcs_current_frame_delay = ((DCS.getRealTime() - ServerData.lastFrameStart) * 1000000),
-        dcs_frame_time = (ServerData.lastFrameTime * 1000000)
+        dcs_current_frame_delay = ((DCS.getRealTime() - ServerData.lastFrameStart) * 1000000)
       }
     }
     Tools.net.client_send_msg(result)

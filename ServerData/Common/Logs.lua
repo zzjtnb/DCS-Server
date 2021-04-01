@@ -156,28 +156,18 @@ end
 
 ---状态更新的主要功能
 ServerData.UpdateStatus = function()
-  -- Main function for status updates
-  -- Diagnostic data
-  -- Update version data
-  local _ServerData = {}
-  _ServerData['v_dcs_hook'] = ServerData.Version
   -- Update clients data - count connected players
   local _playerlist = net.get_player_list()
-  _ServerData['count_players'] = #_playerlist
-  ServerData.StatusData['server'] = _ServerData
   -- Mission data
   local _MissionData = {}
-  _MissionData['name'] = DCS.getMissionName()
-  _MissionData['modeltime'] = DCS.getModelTime()
-  _MissionData['realtime'] = DCS.getRealTime()
-  _MissionData['pause'] = DCS.getPause()
-  _MissionData['multiplayer'] = DCS.isMultiplayer()
+  _MissionData['count_players'] = #_playerlist
+  _MissionData['missionhash'] = ServerData.MissionHash
   _MissionData['theatre'] = ServerData.MissionData['theatre']
   ServerData.StatusData = _MissionData
-  ServerData.StatusData['data'] = ServerData.StatData
-  ServerData.client_send_msg('UpdateStatus', ServerData.StatusData)
-  ServerData.StatData = {}
-  ServerData.SinglePlayer = {}
+  ServerData.StatusData['data'] = ServerData.PlayersData
+  ServerData.client_send_msg('UpdatePlayersData', ServerData.StatusData)
+  ServerData.PlayersData = {}
+  ServerData.StatusData = {}
 end
 ---更新并发送插槽数据
 ServerData.UpdateSlots = function()
