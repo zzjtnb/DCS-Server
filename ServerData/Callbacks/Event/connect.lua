@@ -1,6 +1,8 @@
 ServerData.onEvent.connect = function(eventName, arg1, arg2, arg3, arg4, arg5, arg6, arg7)
   --"connect", playerID, name
-  -- ServerData.LogLogin(arg1)
+  local ucid = net.get_player_info(arg1, 'ucid')
+  local name = net.get_player_info(arg1, 'name')
+  ServerData.LogEvent(eventName, ucid, name, '玩家' .. name .. ' 已连接到服务器')
   ServerData.PlayersTableCache['p' .. arg1] = net.get_player_info(arg1)
 end
 

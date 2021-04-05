@@ -6,7 +6,7 @@ ServerData.onEvent.kill = function(eventName, arg1, arg2, arg3, arg4, arg5, arg6
   local _temp_category = ''
 
   if net.get_player_info(arg4, 'name') ~= nil then
-    _temp_victims = ' player(s) ' .. ServerData.GetMulticrewCrewNames(arg4) .. ' '
+    _temp_victims = ServerData.GetMulticrewCrewNames(arg4)
   else
     _temp_victims = ' AI '
   end
@@ -44,13 +44,16 @@ ServerData.onEvent.kill = function(eventName, arg1, arg2, arg3, arg4, arg5, arg6
     ServerData.LogStatsCountCrew(arg1, _temp_event_type)
   end
   if arg7 == '' then
-    arg7 = 'Cannon'
+    arg7 = '未知武器'
   end
   local victim_vehicle = arg5
   if victim_vehicle == '' then
     victim_vehicle = '?'
   end
-  -- ServerData.LogEvent(eventName, ServerData.SideID2Name(arg3) .. _temp_killers .. ' in ' .. arg2 .. ' killed ' .. ServerData.SideID2Name(arg6) .. _temp_victims .. ' in ' .. victim_vehicle .. ' using ' .. arg7 .. ' [' .. ServerData.GetCategory(arg5) .. ']', arg7, ServerData.GetCategory(arg5))
+
+  local ucid = net.get_player_info(arg1, 'ucid')
+  local name = net.get_player_info(arg1, 'name')
+  ServerData.LogEvent(eventName, ucid, name, ServerData.SideID2Name(arg3) .. _temp_killers .. '驾驶' .. arg2 .. '击杀' .. ServerData.SideID2Name(arg6) .. _temp_victims .. '驾驶的' .. victim_vehicle .. '用' .. arg7 .. ' [' .. ServerData.GetCategory(arg5) .. ']')
 end
 
 ---返回基于的对象单位类别

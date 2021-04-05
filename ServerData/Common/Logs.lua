@@ -9,15 +9,15 @@ ServerData.SideID2Name = function(id)
   -- Helper function returns side name per side (coalition) id
   -- Helper函数按阵营返回每个阵营的名称(coalition) id
   local _sides = {
-    [0] = 'SPECTATOR',
-    [1] = 'RED',
-    [2] = 'BLUE',
-    [3] = 'NEUTRAL' -- TBD check once this is released in DCS
+    [0] = '观众',
+    [1] = '红方',
+    [2] = '蓝方',
+    [3] = '中立者' -- TBD check once this is released in DCS
   }
   if id > 0 and id <= 3 then
     return _sides[id]
   else
-    return '?'
+    return '未知阵营'
   end
 end
 
@@ -124,32 +124,25 @@ ServerData.LogChat = function(playerID, msg, all)
   _TempData['ucid'] = net.get_player_info(playerID, 'ucid')
   _TempData['datetime'] = os.date('%Y-%m-%d %H:%M:%S')
   _TempData['missionhash'] = ServerData.MissionHash
-  ServerData.client_send_msg('LogChat', _TempData)
+  ServerData.client_send_msg('LogChat', _TempData, false)
   Logger.AddLog(_TempData, 1)
 end
+
 ---事件日志
----@param log_type string 事件类型
----@param log_content string 日志内容
----@param log_arg_1 any
----@param log_arg_2 any
-ServerData.LogEvent = function(log_type, log_content, log_arg_1, log_arg_2)
+---@param eventName any 事件类型
+---@param ucid any 玩家ucid
+---@param name any 玩家name
+---@param content any 日志内容
+ServerData.LogEvent = function(eventName, ucid, name, content)
   -- Logs events messages
   -- 记录事件消息
   local _TempData = {}
-  _TempData['log_type'] = log_type
-  _TempData['log_arg_1'] = log_arg_1
-  _TempData['log_arg_2'] = log_arg_2
-  _TempData['log_content'] = log_content
-  _TempData['log_datetime'] = os.date('%Y-%m-%d %H:%M:%S')
-  _TempData['log_missionhash'] = ServerData.MissionHash
-  if log_arg_1 == nil then
-    log_arg_1 = 'null'
-  end
-  if log_arg_2 == nil then
-    log_arg_2 = 'null'
-  end
-  Logger.AddLog('event: ' .. log_type .. ', arg1:' .. log_arg_1 .. ', arg2:' .. log_arg_2 .. ', content: ' .. log_content, 1)
-  ServerData.client_send_msg('LogEvent', _TempData)
+  _TempData['eventName'] = eventName
+  _TempData['ucid'] = ucid
+  _TempData['name'] = name
+  _TempData['content'] = content
+  _TempData['createdAt'] = os.date('%Y-%m-%d %H:%M:%S')
+  table.insert(ServerData.eventData, _TempData)
 end
 
 -- ################################ Data preparation ################################
@@ -164,9 +157,11 @@ ServerData.UpdateStatus = function()
   _MissionData['missionhash'] = ServerData.MissionHash
   _MissionData['theatre'] = ServerData.MissionData['theatre']
   ServerData.StatusData = _MissionData
-  ServerData.StatusData['data'] = ServerData.PlayersData
+  ServerData.StatusData['PlayerData'] = ServerData.PlayersData
+  ServerData.StatusData['eventData'] = ServerData.eventData
   ServerData.client_send_msg('UpdatePlayersData', ServerData.StatusData)
   ServerData.PlayersData = {}
+  ServerData.eventData = {}
   ServerData.StatusData = {}
 end
 ---更新并发送插槽数据
@@ -201,7 +196,7 @@ ServerData.UpdateSlots = function()
 
   local _delay = (DCS.getRealTime() - _now) * 1000000
   Logger.AddLog('Updated slots data; sending (' .. _delay .. 'us)', 2)
-  ServerData.client_send_msg('UpdateSlots', ServerData.SlotsData)
+  ServerData.client_send_msg('UpdateSlots', ServerData.SlotsData, false)
 end
 ---任务信息更新的主要功能
 ServerData.UpdateMission = function()
@@ -251,5 +246,5 @@ ServerData.UpdateMission = function()
   end
   local _delay = (DCS.getRealTime() - _now) * 1000000
   Logger.AddLog('Updated mission data; sending (' .. _delay .. 'us)', 2)
-  ServerData.client_send_msg('UpdateMission', ServerData.MissionData)
+  ServerData.client_send_msg('UpdateMission', ServerData.MissionData, false)
 end

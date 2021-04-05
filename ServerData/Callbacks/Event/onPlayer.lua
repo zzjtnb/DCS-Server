@@ -1,7 +1,9 @@
 ServerData.callbacks.onPlayerStart = function(id)
   -- Player entered cocpit
-  net.send_chat_to(ServerData.MOTD_L1, id)
-  net.send_chat_to(ServerData.MOTD_L2, id)
+  if not ServerData.testServer(id) then
+    net.send_chat_to(ServerData.MOTD_L1, id)
+    net.send_chat_to(ServerData.MOTD_L2, id)
+  end
 end
 
 ServerData.callbacks.onPlayerTrySendChat = function(playerID, msg, all)

@@ -4,6 +4,7 @@ ServerData.callbacks.onMissionLoadEnd = function()
   -- Simulation was started
   ServerData.MissionHash = ServerData.GenerateMissionHash()
   ServerData.PlayersData = {}
+  ServerData.eventData = {}
   ServerData.PlayersTableCache = {}
   ServerData.SlotsData = {}
   ServerData.MissionData = {}

@@ -20,7 +20,12 @@ end
 ServerData.getServerStamp = function()
   return {ucid = nil, alias = 'SERVER'}
 end
-ServerData.client_send_msg = function(event, data)
+
+---发送消息到TCP服务端
+---@param event any 事件类型
+---@param data any 消息数据
+---@param displayMsg any 是否打印
+ServerData.client_send_msg = function(event, data, displayMsg)
   if data ~= nil then
     local result = {
       type = 'ServerData',
@@ -30,6 +35,6 @@ ServerData.client_send_msg = function(event, data)
         dcs_current_frame_delay = ((DCS.getRealTime() - ServerData.lastFrameStart) * 1000000)
       }
     }
-    Tools.net.client_send_msg(result)
+    Tools.net.client_send_msg(result, displayMsg)
   end
 end

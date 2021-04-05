@@ -86,17 +86,22 @@ Tools.dostring_api_env = function(s)
 end
 
 -------------------------------------------  定义Tools的net  -------------------------------------------
-Tools.net.sendData = function(data)
+
+Tools.net.sendData = function(data, displayMsg)
   if TCP.client == nil then
     TCP.client_connect()
   end
   local ip, port = TCP.client:getsockname()
-  net.log('SendDataTo-->' .. ip .. ':' .. port)
-  net.log('SendJSON-->' .. data)
+  if displayMsg == nil or displayMsg then
+    net.log('SendDataTo-->' .. ip .. ':' .. port)
+    net.log('SendJSON-->' .. data)
+  else
+    net.log('SendDataTo-->' .. ip .. ':' .. port)
+  end
   TCP.client_send(data)
 end
-Tools.net.sendJSON = function(data)
-  Tools.net.sendData(net.lua2json(data))
+Tools.net.sendJSON = function(data, displayMsg)
+  Tools.net.sendData(net.lua2json(data), displayMsg)
 end
 Tools.net.getTimeStamp = function()
   local _TempData = {
@@ -106,10 +111,14 @@ Tools.net.getTimeStamp = function()
   }
   return _TempData
 end
-Tools.net.client_send_msg = function(msg)
+
+---发送消息到TCP服务端
+---@param msg table 消息数据
+---@param displayMsg any 是否打印
+Tools.net.client_send_msg = function(msg, displayMsg)
   msg.executionTime = msg.executionTime or {}
   msg.executionTime = Tools.MergeTables(msg.executionTime, Tools.net.getTimeStamp())
-  Tools.net.sendJSON(msg)
+  Tools.net.sendJSON(msg, displayMsg)
 end
 
 Tools.net.server_send_msg = function(data)
