@@ -17,7 +17,7 @@ ServerData.SideID2Name = function(id)
   if id > 0 and id <= 3 then
     return _sides[id]
   else
-    return '未知阵营'
+    return '"神秘阵营"'
   end
 end
 

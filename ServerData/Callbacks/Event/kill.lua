@@ -1,17 +1,21 @@
 ServerData.onEvent.kill = function(eventName, arg1, arg2, arg3, arg4, arg5, arg6, arg7)
   --"kill", killerPlayerID, killerUnitType, killerSide, victimPlayerID, victimUnitType, victimSide, weaponName
-  local _temp_victims = ''
-  local _temp_killers = ' AI '
+  local _temp_victims = '"黑海老乡"'
+  local _temp_killers = '黑海老乡'
   local _temp_event_type = ''
   local _temp_category = ''
-
+  local victim_vehicle = arg5
   if net.get_player_info(arg4, 'name') ~= nil then
     _temp_victims = ServerData.GetMulticrewCrewNames(arg4)
-  else
-    _temp_victims = ' AI '
+  end
+  if arg7 == '' then
+    arg7 = '"秘密武器"'
+  end
+  if victim_vehicle == '' then
+    victim_vehicle = '"神秘单位"'
   end
   if net.get_player_info(arg1, 'name') ~= nil then
-    _temp_killers = ' player(s) ' .. ServerData.GetMulticrewCrewNames(arg1) .. ' '
+    _temp_killers = ServerData.GetMulticrewCrewNames(arg1)
     if arg3 ~= arg6 then
       _temp_category = ServerData.GetCategory(arg5)
       if _temp_category == 'Planes' then
@@ -43,17 +47,9 @@ ServerData.onEvent.kill = function(eventName, arg1, arg2, arg3, arg4, arg5, arg6
     end
     ServerData.LogStatsCountCrew(arg1, _temp_event_type)
   end
-  if arg7 == '' then
-    arg7 = '未知武器'
-  end
-  local victim_vehicle = arg5
-  if victim_vehicle == '' then
-    victim_vehicle = '?'
-  end
-
   local ucid = net.get_player_info(arg1, 'ucid')
   local name = net.get_player_info(arg1, 'name')
-  ServerData.LogEvent(eventName, ucid, name, ServerData.SideID2Name(arg3) .. _temp_killers .. '驾驶' .. arg2 .. '击杀' .. ServerData.SideID2Name(arg6) .. _temp_victims .. '驾驶的' .. victim_vehicle .. '用' .. arg7 .. ' [' .. ServerData.GetCategory(arg5) .. ']')
+  ServerData.LogEvent(eventName, ucid, name, ServerData.SideID2Name(arg3) .. _temp_killers .. '驾驶' .. arg2 .. '用' .. arg7 .. '击杀' .. ServerData.SideID2Name(arg6) .. _temp_victims .. '驾驶的' .. victim_vehicle)
 end
 
 ---返回基于的对象单位类别
